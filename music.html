@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Redesign | Visual Identity</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Container for the CD Interaction */
+        .cd-interaction-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* The CD Case Area */
+        .cd-case {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .cd-case:hover {
+            transform: scale(1.02);
+        }
+
+        /* The Vinyl Disc (Behind the Cover) */
+        .vinyl-disc {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 290px;
+            height: 290px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle, #1a1a1a 30%, #333 31%, #1a1a1a 32%, #111 60%, #000 70%);
+            /* Texture lines */
+            box-shadow: inset 0 0 0 5px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1; /* Behind cover */
+        }
+        
+        /* The Label in the center of the Vinyl */
+        .vinyl-label {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #F05124; /* Orange accent */
+            border: 2px solid white;
+        }
+
+        /* Animation State: Playing */
+        .cd-case.playing .vinyl-disc {
+            transform: translateX(120px) rotate(0deg); /* Slide out */
+            animation: spin 3s linear infinite; /* Start spinning */
+        }
+
+        @keyframes spin {
+            from { transform: translateX(120px) rotate(0deg); }
+            to { transform: translateX(120px) rotate(360deg); }
+        }
+
+        /* The Album Cover Image (Front) */
+        .album-cover-img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2; /* On top */
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background-color: #eee;
+        }
+
+        /* MUSIC PLAYER CONTROLS */
+        .music-controls {
+            background: var(--bg-color);
+            border: 1px solid rgba(128,128,128,0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .track-info h4 { margin: 0; font-size: 1.1rem; }
+        .track-info p { margin: 0; font-size: 0.9rem; opacity: 0.6; }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(128,128,128,0.3);
+            border-radius: 2px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #F05124;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border: none;
+            border-radius: 50%;
+            background: #F05124;
+            cursor: pointer;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+        }
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-icon:hover { transform: scale(1.1); }
+        .btn-play {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: inherit;
+            border: 1px solid currentColor;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <nav>
+        <div class="logo hover-trigger">
+            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#work" class="hover-trigger">Work</a>
+            <a href="about.html" class="hover-trigger">About & Contact</a>
+            <button id="theme-toggle" class="hover-trigger">Dark Mode</button>
+        </div>
+    </nav>
+
+    <article class="project-detail">
+        
+        <header class="project-hero">
+            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden;">
+                
+                <iframe 
+                    src="https://player.vimeo.com/video/1158747698?background=1&autoplay=1&loop=1&byline=0&title=0" 
+                    frameborder="0" 
+                    allow="autoplay; fullscreen" 
+                    style="width: 100%; height: 100%; min-height: 100vh; pointer-events: none; object-fit: cover;">
+                </iframe>
+
+            </div>
+        </header>
+
+        <div class="project-grid-layout">
+            
+            <aside class="sticky-sidebar">
+                <div class="meta-title">
+                    <h1 class="hover-trigger">Blonde</h1>
+                    <p class="subtitle">Album Redesign / 2025</p>
+                </div>
+                
+                <div class="meta-info-vertical">
+                    <div class="info-block">
+                        <h4>Artist</h4>
+                        <p>Frank Ocean</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Role</h4>
+                        <p>Art Direction, Packaging</p>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="project-body-content">
+                <p class="lead-text">
+                    A sonic journey requires a visual identity that matches its depth. This redesign focuses on tactile interaction, bringing the physical ritual of vinyl into the digital age.
+                </p>
+
+                <div style="height: 2rem;"></div>
+
+                <div class="cd-interaction-wrapper">
+                    
+                    <div class="cd-case" id="cd-trigger">
+                        <div class="vinyl-disc">
+                            <div class="vinyl-label"></div>
+                        </div>
+                        <img src="images%20and%20mockups/Artboard%201.png" 
+                             class="album-cover-img" 
+                             alt="Album Cover">
+                    </div>
+
+                    <div class="music-controls">
+                        <div class="track-info">
+                            <h4>Track 01: Nikes</h4>
+                            <p>Frank Ocean - Boy's Don't Cry</p>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <span id="curr-time">0:00</span>
+                            <input type="range" id="seek-slider" value="0" max="100">
+                            <span id="dur-time">0:00</span>
+                        </div>
+
+                        <div class="control-buttons">
+                            
+                            <button class="btn-icon hover-trigger" id="mute-btn">
+                                <svg class="icon-vol-high" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                <svg class="icon-vol-mute" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                                </svg>
+                            </button>
+                            
+                            <button class="btn-icon btn-play hover-trigger" id="play-pause-btn">
+                                <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                            </button>
+
+                            <button class="btn-icon hover-trigger">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <audio id="main-audio" src="images%20and%20mockups/01%20Nikes.ogg"></audio>
+
+                </div>
+                <p class="caption" style="text-align: center; margin-top: 2rem;">
+                    Fig 1. Click the cover to play.
+                </p>
+
+            </section>
+        </div> 
+
+        <div style="height: 6rem;"></div>
+
+        <div class="project-grid-layout">
+            
+            <aside class="sticky-sidebar">
+                <div class="meta-title">
+                    <h1 class="hover-trigger">Lyric Booklet</h1>
+                    <p class="subtitle">Typography / Layout</p>
+                </div>
+            </aside>
+
+            <section class="project-body-content">
+                <p class="lead-text">
+                    The interior layout mirrors the rhythm of the music. Staccato typography for upbeat tracks, and flowing, liquid grids for the ballads.
+                </p>
+
+                <div class="project-img-grid">
+                    <div class="img-item hover-trigger">
+                        <img src="images%20and%20mockups/Artboard%207.png" 
+                             alt="Booklet Spread 1" 
+                             style="width: 100%; height: auto; display: block;">
+                    </div>
+                    <div class="img-item hover-trigger">
+                         <img src="images%20and%20mockups/Artboard%204.png" 
+                             alt="Booklet Spread 2" 
+                             style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
+
+                <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
+                    <a href="index.html" class="hover-trigger">
+                        <p>Back to Home</p>
+                        <h2>All Work &rarr;</h2>
+                    </a>
+                </section>
+
+            </section>
+        </div> 
+
+    </article>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-info">
+                <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+                <div class="socials">
+                    <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
+                    <a href="#" class="hover-trigger">Behance</a>
+                </div>
+            </div>
+
+            <div class="radio-wrapper hover-trigger" id="radio-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                </svg>
+                <span class="radio-status">OFF AIR</span>
+            </div>
+            <audio id="audio-player"></audio>
+
+            <div class="time-display">
+                <p>Local Time:</p>
+                <h2 id="current-time">00:00:00</h2>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cdCase = document.getElementById('cd-trigger');
+            const audio = document.getElementById('main-audio');
+            const playBtn = document.getElementById('play-pause-btn');
+            const playIcon = playBtn.querySelector('.icon-play');
+            const pauseIcon = playBtn.querySelector('.icon-pause');
+            
+            // MUTE Button Logic
+            const muteBtn = document.getElementById('mute-btn');
+            const volHighIcon = muteBtn.querySelector('.icon-vol-high');
+            const volMuteIcon = muteBtn.querySelector('.icon-vol-mute');
+
+            const seekSlider = document.getElementById('seek-slider');
+            const currTimeText = document.getElementById('curr-time');
+            const durTimeText = document.getElementById('dur-time');
+
+            // Toggle Play/Pause
+            function togglePlay() {
+                if (audio.paused) {
+                    audio.play();
+                    cdCase.classList.add('playing');
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                } else {
+                    audio.pause();
+                    cdCase.classList.remove('playing');
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                }
+            }
+
+            // Toggle Mute
+            function toggleMute() {
+                audio.muted = !audio.muted;
+                if (audio.muted) {
+                    volHighIcon.style.display = 'none';
+                    volMuteIcon.style.display = 'block';
+                } else {
+                    volHighIcon.style.display = 'block';
+                    volMuteIcon.style.display = 'none';
+                }
+            }
+
+            // Event Listeners
+            playBtn.addEventListener('click', togglePlay);
+            cdCase.addEventListener('click', togglePlay);
+            muteBtn.addEventListener('click', toggleMute);
+
+            // Update Progress Bar
+            audio.addEventListener('timeupdate', () => {
+                const value = (audio.currentTime / audio.duration) * 100;
+                seekSlider.value = value;
+                currTimeText.innerText = formatTime(audio.currentTime);
+            });
+
+            // Seek functionality
+            seekSlider.addEventListener('input', () => {
+                const time = (seekSlider.value / 100) * audio.duration;
+                audio.currentTime = time;
+            });
+
+            // Set Duration Text
+            audio.addEventListener('loadedmetadata', () => {
+                durTimeText.innerText = formatTime(audio.duration);
+            });
+
+            // Reset when song ends
+            audio.addEventListener('ended', () => {
+                cdCase.classList.remove('playing');
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                seekSlider.value = 0;
+            });
+
+            // Helper: Format Time
+            function formatTime(seconds) {
+                const min = Math.floor(seconds / 60);
+                const sec = Math.floor(seconds % 60);
+                return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+            }
+        });
+    </script>
+</body>
+</html>

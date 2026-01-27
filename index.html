@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedsradiostation | Design Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <nav>
+        <div class="logo hover-trigger">
+            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#work" class="hover-trigger">Work</a>
+            <a href="about.html" class="hover-trigger">About & Contact</a>
+            <button id="theme-toggle" class="hover-trigger">Dark Mode</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content parallax" data-speed="0.2">
+            <p class="subtitle">Design Communication & Illustration</p>
+            <h1 class="hover-trigger">Visual Storytelling <br> through <b>Print</b> & <b>Pixel</b>.</h1>
+        </div>
+    </header>
+
+    <section id="work" class="portfolio-section">
+        <div class="section-header">
+            <h2>Selected Works</h2>
+            <span class="line"></span>
+        </div>
+        
+        <div class="work-list">
+            
+            <a href="fizz-brand.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">01</span>
+                    <h2 class="work-title">Illustration</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">Sem 3</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+            <a href="petrichor.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">02</span>
+                    <h2 class="work-title">Typography</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">SEM3</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+            <a href="design-research.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">03</span>
+                    <h2 class="work-title">Design Research</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">SEM 3</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+            <a href="75-years.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">03</span>
+                    <h2 class="work-title">75 Years of Gujarat</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">SEM *****</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+
+            <a href="music.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">04</span>
+                    <h2 class="work-title">Album Cover Redesign</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">****</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+
+            <a href="typography.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">05</span>
+                    <h2 class="work-title">Touchdesigner</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">extra work</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+             <a href="photography.html" class="work-item hover-trigger">
+                <div class="work-info">
+                    <span class="work-num">06</span>
+                    <h2 class="work-title">Photography</h2>
+                </div>
+                <div class="work-meta">
+                    <span class="work-category">extra work</span>
+                    <span class="work-year">2025</span>
+                </div>
+            </a>
+
+        </div> </section>
+
+    <footer>
+    <div class="footer-content">
+        
+        <div class="contact-info">
+            <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+            <div class="socials">
+                <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
+                <a href="#" class="hover-trigger">Behance</a>
+            </div>
+        </div>
+
+        <div class="radio-wrapper hover-trigger" id="radio-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="2"></circle>
+                <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+            </svg>
+            <span class="radio-status">OFF AIR</span>
+        </div>
+
+        <audio id="audio-player"></audio>
+
+        <div class="time-display">
+            <p>Local Time:</p>
+            <h2 id="current-time">00:00:00</h2>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

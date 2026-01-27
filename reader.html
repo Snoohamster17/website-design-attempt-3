@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine Reader</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Specific Styles for the Reader Page */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* No scrollbars on the main page */
+            background-color: #1a1a1a; /* Dark background for focus */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* The Close Button */
+        .close-reader {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            color: white;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            background: rgba(0,0,0,0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .close-reader:hover {
+            opacity: 1;
+            background: rgba(0,0,0,0.8);
+        }
+
+        /* The Iframe Container */
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="petrichor.html" class="close-reader">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Close Reader
+    </a>
+
+    <iframe id="magazine-frame" 
+            class="iframe-container"
+            src="" 
+            allowfullscreen>
+    </iframe>
+
+    <script>
+    // 1. Get the 'issue' from the URL (e.g., ?issue=storybook)
+    const params = new URLSearchParams(window.location.search);
+    const issue = params.get('issue');
+    const frame = document.getElementById('magazine-frame');
+    const closeBtn = document.querySelector('.close-reader');
+
+    // 2. CONFIGURATION: Map issues to their specific Heyzine Links
+    const magazines = {
+        'warhol': 'https://heyzine.com/flip-book/a463d3c7bb.html',
+        'ocean': 'https://heyzine.com/flip-book/fc607ff351.html',
+        'storybook': 'https://heyzine.com/flip-book/ab290d58aa.html' 
+    };
+
+    // 3. CONFIGURATION: Map issues to the Page you want to go back to
+    const backLinks = {
+        'warhol': 'petrichor.html',
+        'ocean': 'petrichor.html',
+        'storybook': 'fizz-brand.html' /* Make sure this matches your file name! */
+    };
+
+    // 4. Load the Content
+    if (issue && magazines[issue]) {
+        // Set the Iframe source
+        frame.src = magazines[issue];
+        
+        // Set the Back Button link dynamically
+        if (backLinks[issue]) {
+            closeBtn.href = backLinks[issue];
+        }
+    } else {
+        document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:20%'>Issue not found.</h1>";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography | Selected Works</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === 1. HERO CAROUSEL (LOOPING WITH PAUSES) === */
+        .photo-hero {
+            height: 90vh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            width: max-content;
+            /* 18s total loop (3s slide + 3s pause per item approx) */
+            animation: carouselStep 18s ease-in-out infinite;
+        }
+        
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes carouselStep {
+            /* Slide 1 */
+            0%, 30% { transform: translateX(0vw); }
+            /* Slide 2 */
+            33.33%, 63.33% { transform: translateX(-100vw); }
+            /* Slide 3 */
+            66.66%, 96.66% { transform: translateX(-200vw); }
+            /* Clone 1 (Reset) */
+            100% { transform: translateX(-300vw); }
+        }
+
+        .carousel-item {
+            flex: 0 0 100vw;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* === 2. MODULAR GRID (Masonry) === */
+        .photo-grid-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-auto-rows: 300px;
+            gap: 1.5rem;
+            grid-auto-flow: dense; /* Crucial for filling gaps */
+        }
+
+        .grid-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .grid-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .grid-photo:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Orientation Classes */
+        .grid-photo.landscape { grid-column: span 2; }
+        .grid-photo.portrait { grid-row: span 2; }
+        .grid-photo.big { grid-column: span 2; grid-row: span 2; }
+
+        @media (max-width: 768px) {
+            .masonry-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+            .grid-photo.landscape, 
+            .grid-photo.portrait, 
+            .grid-photo.big {
+                grid-column: span 1;
+                grid-row: span 1;
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+        }
+
+        .grid-photo.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <nav>
+        <div class="logo hover-trigger">
+            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#work" class="hover-trigger">Work</a>
+            <a href="about.html" class="hover-trigger">About & Contact</a>
+            <button id="theme-toggle" class="hover-trigger">Dark Mode</button>
+        </div>
+    </nav>
+
+    <article>
+        
+        <header class="photo-hero">
+            <div class="carousel-track">
+                
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/DSC01841-2.jpg" alt="Photography Series 1">
+                    <div class="carousel-caption">
+                        <h1>Udaipur flashes</h1>
+                        <p>2024</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/0.jpg" alt="Photography Series 2">
+                    <div class="carousel-caption">
+                        <h1>Malabar Giant Squirrel</h1>
+                        <p>Nature Study / 2016</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/IMG_1634.jpg" alt="Photography Series 3">
+                    <div class="carousel-caption">
+                        <h1></h1>
+                        <p> Color / 2023</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/DSC01841-2.jpg" alt="Photography Series 1">
+                    <div class="carousel-caption">
+                        <h1>Urban Solitude</h1>
+                        <p>Street Photography / 2025</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/0.jpg" alt="Photography Series 2">
+                    <div class="carousel-caption">
+                        <h1>Natural Light</h1>
+                        <p>Portrait Study / 2024</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images%20and%20mockups/IMG_1634.jpg" alt="Photography Series 3">
+                    <div class="carousel-caption">
+                        <h1></h1>
+                        <p>Color / 2023</p>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <section class="photo-grid-section">
+            <div class="meta-title" style="margin-bottom: 3rem;">
+                <h2>Selected Exposures</h2>
+                <p class="subtitle">A collection of moments captured.</p>
+            </div>
+
+            <div class="masonry-grid">
+                
+                <div class="grid-photo hover-trigger">
+                    <img src="images%20and%20mockups/0-2.jpg" alt="Photo 1">
+                </div>
+
+                <div class="grid-photo portrait hover-trigger">
+                    <img src="images%20and%20mockups/IMG_81623233.jpg" alt="Portrait Photo">
+                </div>
+
+                <div class="grid-photo landscape hover-trigger">
+                    <img src="images%20and%20mockups/IMG_1033.JPG" alt="Landscape Photo">
+                </div>
+
+                <div class="grid-photo hover-trigger">
+                    <img src="images%20and%20mockups/DSC01838.jpg" alt="Photo 2">
+                </div>
+
+                <div class="grid-photo portrait hover-trigger">
+                    <img src="images%20and%20mockups/FullSizeRender%202.jpg" alt="Portrait Photo 2">
+                </div>
+
+                <div class="grid-photo big hover-trigger">
+                    <img src="images%20and%20mockups/IMG_8290.jpg" alt="Feature Photo">
+                </div>
+
+                <div class="grid-photo landscape hover-trigger">
+                    <img src="images%20and%20mockups/IMG_7161.jpg" alt="Landscape Photo 2">
+                </div>
+
+                <div class="grid-photo hover-trigger">
+                    <img src="images%20and%20mockups/IMG_2566%202.jpg" alt="Photo 3">
+                </div>
+
+                <div class="grid-photo portrait hover-trigger">
+                    <img src="images and mockups/IMG_1873 2.jpg" alt="New Portrait 1">
+                </div>
+
+                <div class="grid-photo portrait hover-trigger">
+                    <img src="images and mockups/IMG_5738.jpg" alt="New Portrait 2">
+                </div>
+
+            </div>
+
+            <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
+                <a href="index.html" class="hover-trigger">
+                    <p>Back to Home</p>
+                    <h2>All Work &rarr;</h2>
+                </a>
+            </section>
+
+        </section>
+
+    </article>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-info">
+                <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+                <div class="socials">
+                    <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
+                    <a href="https://500px.com/p/vedbhat260" class="hover-trigger">500px</a>
+                </div>
+            </div>
+
+            <div class="radio-wrapper hover-trigger" id="radio-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                </svg>
+                <span class="radio-status">OFF AIR</span>
+            </div>
+            <audio id="audio-player"></audio>
+
+            <div class="time-display">
+                <p>Local Time:</p>
+                <h2 id="current-time">00:00:00</h2>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 50);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const photos = document.querySelectorAll('.grid-photo');
+            photos.forEach(photo => {
+                observer.observe(photo);
+            });
+        });
+    </script>
+</body>
+</html>
