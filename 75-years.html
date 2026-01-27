@@ -6,6 +6,33 @@
     <title>75 Years of Gujarat | Identity Design</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- NEW CSS TO FORCE VIMEO TO COVER SCREEN --- */
+        .vimeo-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none; /* Allows scrolling over the video */
+            z-index: 0;
+        }
+
+        .vimeo-wrapper iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 Aspect Ratio */
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+        /* --------------------------------------------- */
+    </style>
 </head>
 <body>
 
@@ -26,11 +53,16 @@
     <article class="project-detail">
         
         <header class="project-hero">
-            <div class="hero-img parallax" data-speed="0.1">
-                <video autoplay loop muted playsinline 
-                       src="images%20and%20mockups/75%20years.mp4" 
-                       style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                </video>
+            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative;">
+                
+                <div class="vimeo-wrapper">
+                   <iframe 
+                       src="https://player.vimeo.com/video/1158747698?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1" 
+                       allow="autoplay; fullscreen" 
+                       allowfullscreen>
+                   </iframe>
+                </div>
+
             </div>
         </header>
 

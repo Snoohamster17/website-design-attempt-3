@@ -165,3 +165,36 @@ document.addEventListener("DOMContentLoaded", () => {
         audioPlayer.addEventListener("ended", playRandomSong);
     }
 });
+
+// ===== Scroll-driven hero parallax =====
+
+const hero = document.querySelector(".hero-native");
+
+if (hero) {
+  const layers = gsap.utils.toArray(".hero-layer");
+
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+    const heroHeight = hero.offsetHeight;
+
+    // Only animate while hero is visible
+    if (scrollY <= heroHeight) {
+      layers.forEach((layer, i) => {
+        const depth = (i + 1) * 0.15;
+
+        gsap.to(layer, {
+          y: scrollY * depth,
+          scale: 1 + scrollY / (heroHeight * 8),
+          overwrite: true,
+          duration: 0.4
+        });
+      });
+
+      gsap.to(".hero-bg", {
+        scale: 1 + scrollY / (heroHeight * 12),
+        overwrite: true,
+        duration: 0.4
+      });
+    }
+  });
+}

@@ -849,3 +849,119 @@ footer {
         object-fit: cover !important;
     }
 }
+
+/* CODE-DRIVEN HERO */
+.code-hero {
+    height: 100vh;
+    background: #0b0b0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle grain */
+.code-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.hero-overlay {
+    text-align: center;
+    max-width: 900px;
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    margin-bottom: 24px;
+    opacity: 0;
+}
+
+.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 1.05;
+    opacity: 0;
+}
+
+.hero-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    margin-top: 32px;
+    opacity: 0;
+    color: rgba(255,255,255,0.6);
+}
+/* === Native Hero Animation === */
+
+.hero-native {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #0b0b0b;
+}
+
+/* Soft gradient base */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
+}
+
+/* Floating layers */
+.hero-layer {
+  position: absolute;
+  width: 45vw;
+  height: 45vw;
+  max-width: 520px;
+  max-height: 520px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+/* Individual colours + positions */
+.layer-1 {
+  background: #7f5cff;
+  top: 10%;
+  left: 5%;
+}
+
+.layer-2 {
+  background: #00ffd5;
+  bottom: 10%;
+  right: 10%;
+}
+
+.layer-3 {
+  background: #ff5c8a;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Film grain */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+/* Mobile tuning */
+@media (max-width: 768px) {
+  .hero-layer {
+    width: 70vw;
+    height: 70vw;
+  }
+}

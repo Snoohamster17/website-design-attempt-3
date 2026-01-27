@@ -18,6 +18,14 @@
                 grid-column: span 1;
             }
         }
+
+        /* --- CANVAS STYLES FOR DOT WAVE --- */
+        canvas#waveCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Deep black to match video */
+        }
     </style>
 </head>
 <body>
@@ -39,15 +47,8 @@
     <article class="project-detail">
         
         <header class="project-hero">
-            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden;">
-                
-                <iframe 
-                    src="https://player.vimeo.com/video/1158750739?background=1" 
-                    frameborder="0" 
-                    allow="autoplay; fullscreen; picture-in-picture" 
-                    style="width: 100%; height: 100%; min-height: 100vh; pointer-events: none; object-fit: cover;">
-                </iframe>
-
+            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative;">
+                <canvas id="waveCanvas"></canvas>
             </div>
         </header>
 
@@ -208,5 +209,103 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById('waveCanvas');
+            const ctx = canvas.getContext('2d');
+            const container = canvas.parentElement;
+
+            // --- SETTINGS TUNED TO MATCH VIDEO EXACTLY ---
+            const config = {
+                // Video has larger, sparser dots than standard code
+                dotBaseSize: 2.2,    
+                dotColor: '#FFFFFF', 
+                
+                // Wider gap for that "open grid" look
+                gap: 50,             
+                
+                // Slow, lazy movement
+                speed: 0.001,       
+                
+                // Large wave height for deep distortion
+                amplitude: 60,       
+                
+                // Field of view
+                perspective: 800     
+            };
+
+            let dots = [];
+            let width, height;
+
+            function resize() {
+                const dpr = window.devicePixelRatio || 1;
+                const rect = container.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                ctx.scale(dpr, dpr);
+
+                initDots();
+            }
+
+            function initDots() {
+                dots = [];
+                // Add extra rows/cols to prevent edges showing during wave movement
+                const cols = Math.ceil(width / config.gap) + 8;
+                const rows = Math.ceil(height / config.gap) + 8;
+
+                const startX = (width - (cols * config.gap)) / 2;
+                const startY = (height - (rows * config.gap)) / 2;
+
+                for (let y = 0; y < rows; y++) {
+                    for (let x = 0; x < cols; x++) {
+                        dots.push({
+                            baseX: startX + x * config.gap,
+                            baseY: startY + y * config.gap,
+                            ix: x, 
+                            iy: y
+                        });
+                    }
+                }
+            }
+
+            function animate(time) {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = config.dotColor;
+
+                const t = time * config.speed;
+
+                dots.forEach(dot => {
+                    // DIAGONAL WAVE FORMULA (x + y)
+                    // This creates the "sheet" effect moving from top-left to bottom-right
+                    const waveInput = (dot.ix + dot.iy) * 0.3 + t;
+                    
+                    // Main wave
+                    const z = Math.sin(waveInput) * config.amplitude;
+
+                    // 3D Projection
+                    const scale = config.perspective / (config.perspective + z + 300);
+
+                    const screenX = (dot.baseX - width/2) * scale + width/2;
+                    const screenY = (dot.baseY - height/2) * scale + height/2;
+                    const size = Math.max(0, config.dotBaseSize * scale);
+
+                    ctx.beginPath();
+                    ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', resize);
+            resize(); 
+            requestAnimationFrame(animate);
+        });
+    </script>
 </body>
 </html>
