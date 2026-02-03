@@ -6,6 +6,74 @@
     <title>Vedsradiostation | Design Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- NEW RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Spacing between elements */
+            background: rgba(128,128,128,0.05);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
+        }
+        
+        .radio-wrapper:hover {
+            border-color: currentColor; 
+        }
+
+        /* The Original Radio Icon */
+        .radio-icon-svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            color: inherit;
+        }
+
+        /* The Mini Visualizer Canvas */
+        #mini-visualizer {
+            width: 30px; /* Slightly smaller to fit nicely next to icon */
+            height: 16px;
+            display: block;
+            opacity: 0.6; /* Subtle look */
+        }
+
+        .radio-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); /* Divider line */
+            padding-left: 12px;
+        }
+
+        .mini-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .mini-btn:hover {
+            transform: scale(1.15);
+            opacity: 0.7;
+        }
+
+        .radio-status {
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 50px;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
@@ -120,33 +188,155 @@
         </div> </section>
 
     <footer>
-    <div class="footer-content">
-        
-        <div class="contact-info">
-            <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
-            <div class="socials">
-                <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
-                <a href="#" class="hover-trigger">Behance</a>
+        <div class="footer-content">
+            
+            <div class="contact-info">
+                <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+                <div class="socials">
+                    <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
+                    <a href="#" class="hover-trigger">Behance</a>
+                </div>
+            </div>
+
+            <div class="radio-wrapper hover-trigger">
+                
+                <svg class="radio-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                </svg>
+
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                
+                <audio id="global-audio" crossorigin="anonymous"></audio>
+            </div>
+
+            <div class="time-display">
+                <p>Local Time:</p>
+                <h2 id="current-time">00:00:00</h2>
             </div>
         </div>
-
-        <div class="radio-wrapper hover-trigger" id="radio-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="2"></circle>
-                <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
-            </svg>
-            <span class="radio-status">OFF AIR</span>
-        </div>
-
-        <audio id="audio-player"></audio>
-
-        <div class="time-display">
-            <p>Local Time:</p>
-            <h2 id="current-time">00:00:00</h2>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const radioAudio = document.getElementById('global-audio');
+            const playBtn = document.getElementById('radio-play-btn');
+            const skipBtn = document.getElementById('radio-skip-btn');
+            const statusText = document.getElementById('radio-text');
+            const playIcon = playBtn.querySelector('.play-icon');
+            const pauseIcon = playBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            // --- Playlist Data ---
+            const playlist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audioCtx, analyser, source;
+
+            function initAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    source = audioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawVisualizer();
+                }
+            }
+
+            function loadAndPlay(index) {
+                radioAudio.src = playlist[index].src;
+                statusText.innerText = playlist[index].title;
+                radioAudio.play();
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                if (isPlaying) {
+                    radioAudio.pause();
+                    isPlaying = false;
+                    statusText.innerText = "PAUSED";
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                } else {
+                    if (!radioAudio.src) {
+                        loadAndPlay(currentTrack);
+                    } else {
+                        radioAudio.play();
+                        statusText.innerText = playlist[currentTrack].title;
+                        isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }
+                }
+            });
+
+            skipBtn.addEventListener('click', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            function drawVisualizer() {
+                requestAnimationFrame(drawVisualizer);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Get current text color for the bars (Black in Light Mode, White in Dark Mode)
+                const computedColor = window.getComputedStyle(document.body).color;
+
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+
+                    // Active = Text Color, Inactive = Low Opacity Grey
+                    ctx.fillStyle = isPlaying ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    
+                    // Draw bars from bottom up
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
+        });
+    </script>
 </body>
 </html>

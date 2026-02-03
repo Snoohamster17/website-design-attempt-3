@@ -24,7 +24,12 @@
     <section class="about-container">
         
         <div class="about-image-wrapper">
-            <img src="images and mockups/potrait drawing.png" alt="Portrait of Ved Bhat" class="profile-image hover-trigger">
+            <img src="images and mockups/potrait drawing.png" 
+                 alt="Portrait of Ved Bhat" 
+                 class="profile-image hover-trigger"
+                 id="theme-image"
+                 data-light="images and mockups/potrait in light mode.png"
+                 data-dark="images and mockups/potrait in dark mode.png">
             
             <div class="caption">
                 <p>Portrait, 2026</p>
@@ -63,7 +68,7 @@
     <footer>
         <div class="footer-content">
             <div class="contact-info">
-                <p>&copy; 2025 Vedsradiostation. Portfolio</p>
+                <p>&copy; 2026 Vedsradiostation.</p>
             </div>
             <div class="time-display">
                 <p>Local Time:</p>
@@ -73,5 +78,32 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const themeImg = document.getElementById('theme-image');
+            const html = document.documentElement;
+
+            // Function to update image source
+            function updateProfileImage() {
+                const currentTheme = html.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    themeImg.src = themeImg.getAttribute('data-dark');
+                } else {
+                    themeImg.src = themeImg.getAttribute('data-light');
+                }
+            }
+
+            // Run immediately to set correct image on load
+            updateProfileImage();
+
+            // Listen for toggle clicks
+            toggleBtn.addEventListener('click', () => {
+                // Small timeout ensures the main script updates the data-theme attribute first
+                setTimeout(updateProfileImage, 10);
+            });
+        });
+    </script>
 </body>
 </html>

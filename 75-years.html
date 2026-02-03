@@ -8,30 +8,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- NEW CSS TO FORCE VIMEO TO COVER SCREEN --- */
-        .vimeo-wrapper {
-            position: absolute;
+        /* --- LAYOUT STYLES --- */
+        .spread-item { grid-column: span 2; }
+        @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
+
+        /* --- NAVIGATION STYLES (MATCHING ILLUSTRATION PAGE) --- */
+        nav {
+            /* 1. ABSOLUTE: This container scrolls away with the page */
+            position: absolute; 
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none; /* Allows scrolling over the video */
-            z-index: 0;
+            padding: 40px 60px; /* Aligned padding */
+            display: flex;
+            justify-content: flex-end; /* Pushes links to the right */
+            align-items: center;
+            z-index: 1000;
+            box-sizing: border-box;
+            pointer-events: none; /* Let clicks pass through empty space */
         }
 
-        .vimeo-wrapper iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 Aspect Ratio */
-            transform: translate(-50%, -50%);
-            border: none;
+        .logo {
+            /* 2. FIXED: The Logo stays pinned to the screen */
+            position: fixed;
+            top: 40px; 
+            left: 60px; 
+            
+            pointer-events: auto; 
+            font-weight: 2000;
+            letter-spacing: -0.02em;
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 1001;
+            
+            /* Slide up animation for footer collision */
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
         }
-        /* --------------------------------------------- */
+
+        .nav-links {
+            /* 3. RELATIVE: These scroll away with the nav container */
+            position: relative;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            pointer-events: auto; 
+        }
+
+        /* Responsive Alignment */
+        @media (max-width: 768px) {
+            nav { padding: 20px 20px; }
+            .logo { top: 20px; left: 20px; font-size: 1rem; }
+        }
+
+        /* --- VIMEO FULLSCREEN WRAPPER --- */
+        .vimeo-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; pointer-events: none; z-index: 0;
+        }
+        .vimeo-wrapper iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh;
+            transform: translate(-50%, -50%); border: none;
+        }
     </style>
 </head>
 <body>
@@ -39,10 +77,11 @@
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
 
+    <div class="logo hover-trigger">
+        <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+    </div>
+
     <nav>
-        <div class="logo hover-trigger">
-            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
-        </div>
         <div class="nav-links">
             <a href="index.html#work" class="hover-trigger">Work</a>
             <a href="about.html" class="hover-trigger">About & Contact</a>
@@ -213,5 +252,28 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const logo = document.querySelector('.logo');
+            const footer = document.querySelector('footer');
+
+            window.addEventListener('scroll', () => {
+                const footerRect = footer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                // Check if footer is visible
+                if (footerRect.top < windowHeight) {
+                    // Slide Logo Up (Hide) so it doesn't overlap
+                    logo.style.transform = 'translateY(-100px)';
+                    logo.style.opacity = '0';
+                } else {
+                    // Show Logo
+                    logo.style.transform = 'translateY(0)';
+                    logo.style.opacity = '1';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

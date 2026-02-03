@@ -8,35 +8,104 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* Default: Make the 3rd item span 2 columns on desktop */
-        .spread-item {
-            grid-column: span 2;
-        }
-        /* Mobile: Make it go back to 1 column so it doesn't break */
-        @media (max-width: 768px) {
-            .spread-item {
-                grid-column: span 1;
-            }
+        /* --- LAYOUT STYLES --- */
+        .spread-item { grid-column: span 2; }
+        @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
+
+        /* --- NAVIGATION STYLES --- */
+        nav {
+            /* 1. ABSOLUTE: This container holds the scrolling links */
+            position: absolute; 
+            top: 0;
+            width: 100%;
+            padding: 40px 60px; /* Aligned padding for links */
+            display: flex;
+            justify-content: flex-end; /* Links pushed right */
+            align-items: center; /* Vertically center links */
+            z-index: 1000;
+            box-sizing: border-box;
+            pointer-events: none; 
         }
 
-        /* --- CANVAS STYLES FOR DOT WAVE --- */
+        .logo {
+            /* 2. FIXED: The Logo stays pinned to the screen */
+            position: fixed;
+            /* ALIGNMENT FIX: Matches nav padding (40px top, 60px left) */
+            top: 40px; 
+            left: 60px; 
+            
+            pointer-events: auto; 
+            font-weight: 2000;
+            letter-spacing: -0.02em;
+            font-size: 1.5rem;
+            line-height: 1; /* Ensures text height aligns perfectly */
+            z-index: 1001;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+        }
+
+        .nav-links {
+            /* 3. RELATIVE: Inside nav, these will scroll away */
+            position: relative;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            pointer-events: auto; 
+            /* No extra margin/padding needed; flexbox in <nav> handles alignment */
+        }
+
+        /* Responsive Alignment for Mobile */
+        @media (max-width: 768px) {
+            nav { padding: 20px 20px; }
+            .logo { top: 20px; left: 20px; font-size: 1rem; }
+        }
+
+        /* --- CANVAS STYLES --- */
         canvas#waveCanvas {
             display: block;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Deep black to match video */
+            background-color: #000; 
         }
+
+        /* --- MODAL STYLES --- */
+        .modal {
+            display: none; position: fixed; z-index: 9999; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px); align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal.show { display: flex; opacity: 1; }
+        .modal-content {
+            max-width: 90%; max-height: 90vh; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            border-radius: 4px; transform: scale(0.9); transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+        .modal.show .modal-content { transform: scale(1); }
+        .close-modal {
+            position: absolute; top: 30px; right: 40px; color: #f1f1f1;
+            font-size: 40px; font-weight: bold; cursor: pointer;
+            transition: 0.3s; font-family: 'Inter', sans-serif; z-index: 10000;
+        }
+        .close-modal:hover { color: #F05124; }
+        .pop-trigger img { cursor: zoom-in; transition: opacity 0.2s ease; }
+        .pop-trigger img:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
+    <div id="imgModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
 
+    <div class="logo hover-trigger">
+        <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+    </div>
+
     <nav>
-        <div class="logo hover-trigger">
-            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
-        </div>
         <div class="nav-links">
             <a href="index.html#work" class="hover-trigger">Work</a>
             <a href="about.html" class="hover-trigger">About & Contact</a>
@@ -149,14 +218,16 @@
 
                 <div class="project-img-grid">
                     
-                    <div class="img-item hover-trigger">
+                    <div class="img-item pop-trigger">
                         <img src="images%20and%20mockups/Front%20Can%20Mockup.png" 
+                             data-popup-src="images and mockups/fanta.png"
                              alt="Sketch Process 1" 
                              style="width: 100%; height: auto; display: block;">
                     </div>
 
-                    <div class="img-item hover-trigger">
+                    <div class="img-item pop-trigger">
                          <img src="images%20and%20mockups/Front%20Can%20Mockup%20Mexican.png" 
+                             data-popup-src="images and mockups/fanta mexico.png"
                              alt="Sketch Process 2" 
                              style="width: 100%; height: auto; display: block;">
                     </div>
@@ -173,7 +244,7 @@
                 <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
                     <a href="petrichor.html" class="hover-trigger">
                         <p>Next Project</p>
-                        <h2>Petrichor &rarr;</h2>
+                        <h2>Typography &rarr;</h2>
                     </a>
                 </section>
 
@@ -183,7 +254,6 @@
 
     <footer>
         <div class="footer-content">
-            
             <div class="contact-info">
                 <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
                 <div class="socials">
@@ -212,27 +282,15 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- 1. DOT WAVE ANIMATION ---
             const canvas = document.getElementById('waveCanvas');
             const ctx = canvas.getContext('2d');
             const container = canvas.parentElement;
 
-            // --- SETTINGS TUNED TO MATCH VIDEO EXACTLY ---
             const config = {
-                // Video has larger, sparser dots than standard code
-                dotBaseSize: 2.2,    
-                dotColor: '#FFFFFF', 
-                
-                // Wider gap for that "open grid" look
-                gap: 50,             
-                
-                // Slow, lazy movement
-                speed: 0.001,       
-                
-                // Large wave height for deep distortion
-                amplitude: 60,       
-                
-                // Field of view
-                perspective: 800     
+                dotSize: 1.6, dotColor: '#FFFFFF', gap: 30, speed: 0.0012, 
+                amplitude: 60, perspective: 600, frequency: 0.12       
             };
 
             let dots = [];
@@ -243,20 +301,16 @@
                 const rect = container.getBoundingClientRect();
                 width = rect.width;
                 height = rect.height;
-
                 canvas.width = width * dpr;
                 canvas.height = height * dpr;
                 ctx.scale(dpr, dpr);
-
                 initDots();
             }
 
             function initDots() {
                 dots = [];
-                // Add extra rows/cols to prevent edges showing during wave movement
-                const cols = Math.ceil(width / config.gap) + 8;
-                const rows = Math.ceil(height / config.gap) + 8;
-
+                const cols = Math.ceil(width / config.gap) + 10;
+                const rows = Math.ceil(height / config.gap) + 10;
                 const startX = (width - (cols * config.gap)) / 2;
                 const startY = (height - (rows * config.gap)) / 2;
 
@@ -265,8 +319,7 @@
                         dots.push({
                             baseX: startX + x * config.gap,
                             baseY: startY + y * config.gap,
-                            ix: x, 
-                            iy: y
+                            ix: x, iy: y
                         });
                     }
                 }
@@ -275,36 +328,79 @@
             function animate(time) {
                 ctx.fillStyle = '#000000';
                 ctx.fillRect(0, 0, width, height);
-                ctx.fillStyle = config.dotColor;
-
                 const t = time * config.speed;
 
                 dots.forEach(dot => {
-                    // DIAGONAL WAVE FORMULA (x + y)
-                    // This creates the "sheet" effect moving from top-left to bottom-right
-                    const waveInput = (dot.ix + dot.iy) * 0.3 + t;
-                    
-                    // Main wave
-                    const z = Math.sin(waveInput) * config.amplitude;
-
-                    // 3D Projection
-                    const scale = config.perspective / (config.perspective + z + 300);
-
+                    const waveX = Math.sin((dot.ix * config.frequency) + t);
+                    const waveY = Math.sin((dot.iy * config.frequency) + t);
+                    const z = (waveX + waveY) * config.amplitude;
+                    const scale = config.perspective / (config.perspective + z + 400);
                     const screenX = (dot.baseX - width/2) * scale + width/2;
                     const screenY = (dot.baseY - height/2) * scale + height/2;
-                    const size = Math.max(0, config.dotBaseSize * scale);
+                    const opacity = Math.min(1, Math.max(0.2, scale * 0.8));
+                    const size = Math.max(0, config.dotSize * scale);
 
+                    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
                     ctx.beginPath();
                     ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
                     ctx.fill();
                 });
-
                 requestAnimationFrame(animate);
             }
 
             window.addEventListener('resize', resize);
             resize(); 
             requestAnimationFrame(animate);
+
+
+            // --- 2. MODAL POPUP LOGIC ---
+            const modal = document.getElementById("imgModal");
+            const modalImg = document.getElementById("modalImage");
+            const triggers = document.querySelectorAll('.pop-trigger img');
+            const closeBtn = document.querySelector(".close-modal");
+
+            triggers.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.classList.add("show");
+                    document.body.style.overflow = 'hidden'; 
+                    const popupSrc = this.getAttribute('data-popup-src');
+                    modalImg.src = (popupSrc && popupSrc !== "INSERT_IMAGE_LINK_HERE") ? popupSrc : this.src;
+                });
+            });
+
+            function closeModal() {
+                modal.classList.remove("show");
+                document.body.style.overflow = ''; 
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+
+            // --- 3. SPLIT SCROLL LOGIC (LOGO HIDES AT FOOTER) ---
+            const logo = document.querySelector('.logo');
+            const footer = document.querySelector('footer');
+
+            window.addEventListener('scroll', () => {
+                const footerRect = footer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                // Check if footer is visible
+                if (footerRect.top < windowHeight) {
+                    // Slide Logo Up (Hide)
+                    logo.style.transform = 'translateY(-100px)';
+                    logo.style.opacity = '0';
+                } else {
+                    // Show Logo
+                    logo.style.transform = 'translateY(0)';
+                    logo.style.opacity = '1';
+                }
+            });
+
         });
     </script>
 </body>

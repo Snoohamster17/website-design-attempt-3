@@ -6,19 +6,70 @@
     <title>PETRICHOR & | Publication Design</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
 
     <style>
-        /* --- NEW CSS TO FORCE VIMEO TO COVER SCREEN --- */
+        /* --- LAYOUT STYLES --- */
+        .spread-item { grid-column: span 2; }
+        @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
+
+        /* --- SPLIT NAVIGATION STYLES --- */
+        nav {
+            /* 1. ABSOLUTE: This container (and links) scrolls with the page */
+            position: absolute; 
+            top: 0;
+            width: 100%;
+            padding: 40px 60px; /* Aligned padding */
+            display: flex;
+            justify-content: flex-end; /* Links pushed right */
+            align-items: center;
+            z-index: 1000;
+            box-sizing: border-box;
+            pointer-events: none; 
+        }
+
+        .logo {
+            /* 2. FIXED: The Logo stays pinned to the screen */
+            position: fixed;
+            top: 40px; 
+            left: 60px; 
+            pointer-events: auto; 
+            font-weight: 2000;
+            letter-spacing: -0.02em;
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 1001;
+            
+            /* Slide up animation for footer collision */
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+        }
+
+        .nav-links {
+            /* 3. RELATIVE: Scrolls away with the content */
+            position: relative;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            pointer-events: auto; 
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            nav { padding: 20px 20px; }
+            .logo { top: 20px; left: 20px; font-size: 1rem; }
+        }
+
+        /* --- VIMEO FULLSCREEN WRAPPER --- */
         .vimeo-wrapper {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
             height: 100%;
-            overflow: hidden;
-            pointer-events: none; /* Allows scrolling over the video */
+            overflow: hidden; 
+            pointer-events: none; 
             z-index: 0;
         }
 
@@ -29,11 +80,10 @@
             width: 100vw;
             height: 56.25vw; /* 16:9 Aspect Ratio */
             min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 Aspect Ratio */
+            min-width: 177.77vh; 
             transform: translate(-50%, -50%);
             border: none;
         }
-        /* --------------------------------------------- */
     </style>
 </head>
 <body>
@@ -41,10 +91,11 @@
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
 
+    <div class="logo hover-trigger">
+        <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
+    </div>
+
     <nav>
-        <div class="logo hover-trigger">
-            <a href="index.html" style="text-decoration:none; color:inherit;">Vedsradiostation</a>
-        </div>
         <div class="nav-links">
             <a href="index.html#work" class="hover-trigger">Work</a>
             <a href="about.html" class="hover-trigger">About & Contact</a>
@@ -55,7 +106,7 @@
     <article class="project-detail">
         
         <header class="project-hero">
-            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative;">
+            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative; background-color: #000;">
                 
                 <div class="vimeo-wrapper">
                     <iframe 
@@ -268,92 +319,42 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            /* --- SPLIT SCROLL LOGIC --- */
+            const logo = document.querySelector('.logo');
+            const footer = document.querySelector('footer');
+
+            window.addEventListener('scroll', () => {
+                const footerRect = footer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                // If footer is entering the viewport, hide the fixed logo
+                if (footerRect.top < windowHeight) {
+                    logo.style.transform = 'translateY(-100px)';
+                    logo.style.opacity = '0';
+                } else {
+                    logo.style.transform = 'translateY(0)';
+                    logo.style.opacity = '1';
+                }
+            });
+
+            /* --- CONTENT REVEALS (Kept from your GSAP request) --- */
+            gsap.utils.toArray(".project-body-content > *").forEach((el) => {
+                gsap.from(el, {
+                    scrollTrigger: { trigger: el, start: "top 85%" },
+                    y: 40, opacity: 0, duration: 1.4, ease: "power3.out"
+                });
+            });
+
+            gsap.from(".sticky-sidebar", {
+                scrollTrigger: { trigger: ".project-grid-layout", start: "top 75%" },
+                x: -40, opacity: 0, duration: 1.6, ease: "power3.out"
+            });
+        });
+    </script>
 </body>
 </html>
-
-<script>
-gsap.registerPlugin(ScrollTrigger);
-
-/* ----------------------------
-   HERO INTRO (ON LOAD)
------------------------------ */
-
-const heroTL = gsap.timeline({ delay: 0.6 });
-
-heroTL
-  .from(".nav", { opacity: 0, y: -20, duration: 1.2, ease: "power3.out" }, 0)
-  .from(".hero-eyebrow", {
-      y: 24,
-      opacity: 0,
-      duration: 1.4,
-      ease: "power3.out"
-  }, 0.2)
-  .from(".hero-title", {
-      y: 60,
-      opacity: 0,
-      filter: "blur(8px)",
-      duration: 2.4,
-      ease: "power3.out"
-  }, 0.4)
-  .from(".hero-sub", {
-      y: 32,
-      opacity: 0,
-      duration: 1.8,
-      ease: "power3.out"
-  }, 0.8);
-
-/* ----------------------------
-   HERO SCROLL EXIT
------------------------------ */
-
-gsap.timeline({
-  scrollTrigger: {
-    trigger: ".project-hero",
-    start: "top top",
-    end: "bottom top",
-    scrub: true
-  }
-})
-.to(".hero-overlay", {
-    y: -120,
-    opacity: 0,
-    ease: "none"
-})
-.to(".code-hero", {
-    filter: "blur(6px)",
-    scale: 0.98,
-    ease: "none"
-}, 0);
-
-/* ----------------------------
-   CONTENT REVEALS
------------------------------ */
-
-gsap.utils.toArray(".project-body-content > *").forEach((el) => {
-  gsap.from(el, {
-    scrollTrigger: {
-      trigger: el,
-      start: "top 85%",
-    },
-    y: 40,
-    opacity: 0,
-    duration: 1.4,
-    ease: "power3.out"
-  });
-});
-
-/* ----------------------------
-   STICKY SIDEBAR FADE-IN
------------------------------ */
-
-gsap.from(".sticky-sidebar", {
-  scrollTrigger: {
-    trigger: ".project-grid-layout",
-    start: "top 75%"
-  },
-  x: -40,
-  opacity: 0,
-  duration: 1.6,
-  ease: "power3.out"
-});
-</script>

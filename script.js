@@ -106,7 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const playlist = [
             "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a", 
             "images and mockups/Drake - Passionfruit (Instrumental).mp3",
-            "images and mockups/17 Frank Ocean - Rushes To.flac"
+            "images and mockups/17 Frank Ocean - Rushes To.flac",
+            "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3",
+            "images and mockups/Treefingers 0.mp3",
+            "images and mockups/Jai Paul - Jasmine (Demo).mp3",
+            "images and mockups/Go.mp3"
         ];
 
         let isPlaying = false;
