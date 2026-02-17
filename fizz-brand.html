@@ -8,52 +8,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --text-color: #000000; /* Black in Light Mode */
+            --bg-grad-start: #ffffff;
+            --bg-grad-end: #f2f2f2;
+            --halftone-color: rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --text-color: #ffffff; /* White in Dark Mode */
+            --bg-grad-start: #121212;
+            --bg-grad-end: #0a0a0a;
+            --halftone-color: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(var(--halftone-color) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom right, var(--bg-grad-start), var(--bg-grad-end));
+            background-size: 24px 24px, 100% 100%;
+            background-attachment: fixed;
+            transition: color 0.3s ease;
+        }
+
+        a { color: var(--text-color); transition: opacity 0.2s; }
+        a:hover { opacity: 0.7; }
+
         /* --- LAYOUT STYLES --- */
         .spread-item { grid-column: span 2; }
         @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
 
         /* --- NAVIGATION STYLES --- */
         nav {
-            /* 1. ABSOLUTE: This container holds the scrolling links */
-            position: absolute; 
-            top: 0;
-            width: 100%;
-            padding: 40px 60px; /* Aligned padding for links */
-            display: flex;
-            justify-content: flex-end; /* Links pushed right */
-            align-items: center; /* Vertically center links */
-            z-index: 1000;
-            box-sizing: border-box;
-            pointer-events: none; 
+            position: absolute; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            z-index: 1000; box-sizing: border-box; pointer-events: none; 
         }
 
         .logo {
-            /* 2. FIXED: The Logo stays pinned to the screen */
-            position: fixed;
-            /* ALIGNMENT FIX: Matches nav padding (40px top, 60px left) */
-            top: 40px; 
-            left: 60px; 
+            position: fixed; top: 40px; left: 60px; pointer-events: auto; 
+            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem; line-height: 1; z-index: 1001;
             
-            pointer-events: auto; 
-            font-weight: 2000;
-            letter-spacing: -0.02em;
-            font-size: 1.5rem;
-            line-height: 1; /* Ensures text height aligns perfectly */
-            z-index: 1001;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            /* LOGO COLOR INVERSION */
+            color: var(--text-color);
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, color 0.3s ease;
         }
 
         .nav-links {
-            /* 3. RELATIVE: Inside nav, these will scroll away */
-            position: relative;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            pointer-events: auto; 
-            /* No extra margin/padding needed; flexbox in <nav> handles alignment */
+            position: relative; display: flex; gap: 2rem; align-items: center; pointer-events: auto; 
         }
 
-        /* Responsive Alignment for Mobile */
         @media (max-width: 768px) {
             nav { padding: 20px 20px; }
             .logo { top: 20px; left: 20px; font-size: 1rem; }
@@ -61,10 +68,7 @@
 
         /* --- CANVAS STYLES --- */
         canvas#waveCanvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            background-color: #000; 
+            display: block; width: 100%; height: 100%; background-color: #000; 
         }
 
         /* --- MODAL STYLES --- */
@@ -89,6 +93,32 @@
         .close-modal:hover { color: #F05124; }
         .pop-trigger img { cursor: zoom-in; transition: opacity 0.2s ease; }
         .pop-trigger img:hover { opacity: 0.8; }
+
+        /* --- RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(128,128,128,0.05); padding: 8px 16px;
+            border-radius: 30px; border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
+        }
+        .radio-wrapper:hover { border-color: var(--text-color); }
+        .radio-icon-svg { width: 20px; height: 20px; display: block; color: var(--text-color); }
+        #mini-visualizer { width: 30px; height: 16px; display: block; opacity: 0.6; }
+        .radio-controls {
+            display: flex; align-items: center; gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); padding-left: 12px;
+        }
+        .mini-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            padding: 0; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .mini-btn:hover { transform: scale(1.15); opacity: 0.7; }
+        .radio-status {
+            font-size: 0.8rem; font-family: 'Inter', sans-serif; font-weight: 500;
+            white-space: nowrap; min-width: 50px; opacity: 0.8; color: var(--text-color);
+        }
+        .contact-info, .socials { color: var(--text-color); }
     </style>
 </head>
 <body>
@@ -147,7 +177,7 @@
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    This project explores the relationship between text and image. The goal was to create a visual language that complements the narrative without overpowering it.
+                    This project explores the aboriginal art style for The Young King by Oscar Wilde. The goal was to create a visually appealing illustrated story book that draws inspiration from the Aborigini culture and integrate visually.
                 </p>
 
                 <div class="project-img-large hover-trigger" style="aspect-ratio: auto;">
@@ -155,7 +185,7 @@
                          alt="Book Cover Spread" 
                          style="width: 100%; height: auto; display: block;">
                 </div>
-                <p class="caption">Fig 1. Full Cover Spread</p>
+                <p class="caption"></p>
 
                 <p>
                     The illustrations utilize a vibrant color palette to engage the reader, while the typography is set to ensure readability across different age groups.
@@ -180,10 +210,10 @@
                              style="width: 100%; height: auto; display: block;">
                     </div>
                 </div>
-                <p class="caption">Fig 2. Interior Layouts & Character Details</p>
+                <p class="caption"></p>
                 
                 <p>
-                    The final printed book serves as a tactile portfolio piece, demonstrating proficiency in both digital painting and print production.
+                  
                 </p>
 
             </section>
@@ -202,7 +232,7 @@
                 <div class="meta-info-vertical">
                     <div class="info-block">
                         <h4>Focus</h4>
-                        <p>Character Design, Storyboarding</p>
+                        <p>Fanta Soda Illustration</p>
                     </div>
                     <div class="info-block">
                         <h4>Tools</h4>
@@ -213,7 +243,7 @@
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    Before the final vector illustrations, the characters went through several iterations. This phase focused on capturing expression and movement.
+                    This project's intent was to design a special edition Fanta can that was relevant to the current market.
                 </p>
 
                 <div class="project-img-grid">
@@ -239,7 +269,7 @@
                     </div>
 
                 </div>
-                <p class="caption">Initial pencil sketches vs. final digital render.</p>
+                <p class="caption"></p>
 
                 <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
                     <a href="petrichor.html" class="hover-trigger">
@@ -262,14 +292,24 @@
                 </div>
             </div>
 
-            <div class="radio-wrapper hover-trigger" id="radio-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="radio-wrapper hover-trigger">
+                <svg class="radio-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="2"></circle>
                     <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
                 </svg>
-                <span class="radio-status">OFF AIR</span>
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                <audio id="global-audio" crossorigin="anonymous"></audio>
             </div>
-            <audio id="audio-player"></audio>
 
             <div class="time-display">
                 <p>Local Time:</p>
@@ -284,74 +324,55 @@
         document.addEventListener("DOMContentLoaded", () => {
             
             // --- 1. DOT WAVE ANIMATION ---
-            const canvas = document.getElementById('waveCanvas');
-            const ctx = canvas.getContext('2d');
-            const container = canvas.parentElement;
+            const waveCanvas = document.getElementById('waveCanvas');
+            if(waveCanvas) {
+                const ctx = waveCanvas.getContext('2d');
+                const container = waveCanvas.parentElement;
+                const config = { dotSize: 1.6, dotColor: '#FFFFFF', gap: 30, speed: 0.0012, amplitude: 60, perspective: 600, frequency: 0.12 };
+                let dots = [], width, height;
 
-            const config = {
-                dotSize: 1.6, dotColor: '#FFFFFF', gap: 30, speed: 0.0012, 
-                amplitude: 60, perspective: 600, frequency: 0.12       
-            };
+                function resize() {
+                    const dpr = window.devicePixelRatio || 1;
+                    const rect = container.getBoundingClientRect();
+                    width = rect.width; height = rect.height;
+                    waveCanvas.width = width * dpr; waveCanvas.height = height * dpr;
+                    ctx.scale(dpr, dpr);
+                    initDots();
+                }
 
-            let dots = [];
-            let width, height;
-
-            function resize() {
-                const dpr = window.devicePixelRatio || 1;
-                const rect = container.getBoundingClientRect();
-                width = rect.width;
-                height = rect.height;
-                canvas.width = width * dpr;
-                canvas.height = height * dpr;
-                ctx.scale(dpr, dpr);
-                initDots();
-            }
-
-            function initDots() {
-                dots = [];
-                const cols = Math.ceil(width / config.gap) + 10;
-                const rows = Math.ceil(height / config.gap) + 10;
-                const startX = (width - (cols * config.gap)) / 2;
-                const startY = (height - (rows * config.gap)) / 2;
-
-                for (let y = 0; y < rows; y++) {
-                    for (let x = 0; x < cols; x++) {
-                        dots.push({
-                            baseX: startX + x * config.gap,
-                            baseY: startY + y * config.gap,
-                            ix: x, iy: y
-                        });
+                function initDots() {
+                    dots = [];
+                    const cols = Math.ceil(width / config.gap) + 10;
+                    const rows = Math.ceil(height / config.gap) + 10;
+                    const startX = (width - (cols * config.gap)) / 2;
+                    const startY = (height - (rows * config.gap)) / 2;
+                    for (let y = 0; y < rows; y++) {
+                        for (let x = 0; x < cols; x++) {
+                            dots.push({ baseX: startX + x * config.gap, baseY: startY + y * config.gap, ix: x, iy: y });
+                        }
                     }
                 }
+
+                function animate(time) {
+                    ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, width, height);
+                    const t = time * config.speed;
+                    dots.forEach(dot => {
+                        const waveX = Math.sin((dot.ix * config.frequency) + t);
+                        const waveY = Math.sin((dot.iy * config.frequency) + t);
+                        const z = (waveX + waveY) * config.amplitude;
+                        const scale = config.perspective / (config.perspective + z + 400);
+                        const screenX = (dot.baseX - width/2) * scale + width/2;
+                        const screenY = (dot.baseY - height/2) * scale + height/2;
+                        const opacity = Math.min(1, Math.max(0.2, scale * 0.8));
+                        const size = Math.max(0, config.dotSize * scale);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                        ctx.beginPath(); ctx.arc(screenX, screenY, size, 0, Math.PI * 2); ctx.fill();
+                    });
+                    requestAnimationFrame(animate);
+                }
+                window.addEventListener('resize', resize);
+                resize(); requestAnimationFrame(animate);
             }
-
-            function animate(time) {
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(0, 0, width, height);
-                const t = time * config.speed;
-
-                dots.forEach(dot => {
-                    const waveX = Math.sin((dot.ix * config.frequency) + t);
-                    const waveY = Math.sin((dot.iy * config.frequency) + t);
-                    const z = (waveX + waveY) * config.amplitude;
-                    const scale = config.perspective / (config.perspective + z + 400);
-                    const screenX = (dot.baseX - width/2) * scale + width/2;
-                    const screenY = (dot.baseY - height/2) * scale + height/2;
-                    const opacity = Math.min(1, Math.max(0.2, scale * 0.8));
-                    const size = Math.max(0, config.dotSize * scale);
-
-                    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-                    ctx.beginPath();
-                    ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                requestAnimationFrame(animate);
-            }
-
-            window.addEventListener('resize', resize);
-            resize(); 
-            requestAnimationFrame(animate);
-
 
             // --- 2. MODAL POPUP LOGIC ---
             const modal = document.getElementById("imgModal");
@@ -375,32 +396,119 @@
 
             closeBtn.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
+                if (e.target === modal) closeModal();
             });
 
-
-            // --- 3. SPLIT SCROLL LOGIC (LOGO HIDES AT FOOTER) ---
+            // --- 3. SPLIT SCROLL LOGIC ---
             const logo = document.querySelector('.logo');
             const footer = document.querySelector('footer');
 
             window.addEventListener('scroll', () => {
                 const footerRect = footer.getBoundingClientRect();
                 const windowHeight = window.innerHeight;
-
-                // Check if footer is visible
                 if (footerRect.top < windowHeight) {
-                    // Slide Logo Up (Hide)
                     logo.style.transform = 'translateY(-100px)';
                     logo.style.opacity = '0';
                 } else {
-                    // Show Logo
                     logo.style.transform = 'translateY(0)';
                     logo.style.opacity = '1';
                 }
             });
 
+            // --- 4. RADIO LOGIC ---
+            const radioAudio = document.getElementById('global-audio');
+            const playBtn = document.getElementById('radio-play-btn');
+            const skipBtn = document.getElementById('radio-skip-btn');
+            const statusText = document.getElementById('radio-text');
+            const playIcon = playBtn.querySelector('.play-icon');
+            const pauseIcon = playBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            const playlist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audioCtx, analyser, source;
+
+            function initAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    source = audioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawVisualizer();
+                }
+            }
+
+            function loadAndPlay(index) {
+                radioAudio.src = playlist[index].src;
+                statusText.innerText = playlist[index].title;
+                radioAudio.play();
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                if (isPlaying) {
+                    radioAudio.pause();
+                    isPlaying = false;
+                    statusText.innerText = "PAUSED";
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                } else {
+                    if (!radioAudio.src) {
+                        loadAndPlay(currentTrack);
+                    } else {
+                        radioAudio.play();
+                        statusText.innerText = playlist[currentTrack].title;
+                        isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }
+                }
+            });
+
+            skipBtn.addEventListener('click', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            function drawVisualizer() {
+                requestAnimationFrame(drawVisualizer);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const computedColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+                    ctx.fillStyle = isPlaying ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
         });
     </script>
 </body>

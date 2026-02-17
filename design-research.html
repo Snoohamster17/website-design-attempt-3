@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Research | User Experience</title>
+    <title>Portfolio | Selected Works</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -11,43 +11,57 @@
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
 
     <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --text-color: #000000; /* Black in Light Mode */
+            --bg-grad-start: #ffffff;
+            --bg-grad-end: #f2f2f2;
+            --halftone-color: rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --text-color: #ffffff; /* White in Dark Mode */
+            --bg-grad-start: #121212;
+            --bg-grad-end: #0a0a0a;
+            --halftone-color: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(var(--halftone-color) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom right, var(--bg-grad-start), var(--bg-grad-end));
+            background-size: 24px 24px, 100% 100%;
+            background-attachment: fixed;
+            transition: color 0.3s ease;
+        }
+
+        a { color: var(--text-color); transition: opacity 0.2s; }
+        a:hover { opacity: 0.7; }
+
         /* --- LAYOUT STYLES --- */
         .spread-item { grid-column: span 2; }
         @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
 
         /* --- SPLIT NAVIGATION STYLES --- */
         nav {
-            position: absolute; 
-            top: 0;
-            width: 100%;
-            padding: 40px 60px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            z-index: 1000;
-            box-sizing: border-box;
-            pointer-events: none; 
+            position: absolute; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            z-index: 1000; box-sizing: border-box; pointer-events: none; 
         }
 
         .logo {
-            position: fixed;
-            top: 40px; 
-            left: 60px; 
-            pointer-events: auto; 
-            font-weight: 2000;
-            letter-spacing: -0.02em;
-            font-size: 1.5rem;
-            line-height: 1;
-            z-index: 1001;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            position: fixed; top: 40px; left: 60px; pointer-events: auto; 
+            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem; line-height: 1; z-index: 1001;
+            
+            /* LOGO COLOR INVERSION */
+            color: var(--text-color);
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, color 0.3s ease;
         }
 
         .nav-links {
-            position: relative;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            pointer-events: auto; 
+            position: relative; display: flex; gap: 2rem; align-items: center; pointer-events: auto; 
         }
 
         @media (max-width: 768px) {
@@ -57,18 +71,52 @@
 
         /* --- NETWORK CANVAS STYLES --- */
         #research-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
+            position: relative; width: 100%; height: 100%;
+            background-color: #000; overflow: hidden;
+        }
+        #network-canvas { display: block; width: 100%; height: 100%; }
+
+        /* --- RESEARCH SECTIONS --- */
+        .spacer-large { height: 6rem; width: 100%; }
+        
+        .insights-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+            margin-top: 2rem; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 2rem;
+        }
+        .insight-card .big-number {
+            display: block; font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem; line-height: 1; margin-bottom: 1rem; font-style: italic;
         }
 
-        #network-canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
+        @media (max-width: 768px) {
+            .insights-grid { grid-template-columns: 1fr; }
         }
+
+        /* --- RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(128,128,128,0.05); padding: 8px 16px;
+            border-radius: 30px; border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
+        }
+        .radio-wrapper:hover { border-color: var(--text-color); }
+        .radio-icon-svg { width: 20px; height: 20px; display: block; color: var(--text-color); }
+        #mini-visualizer { width: 30px; height: 16px; display: block; opacity: 0.6; }
+        .radio-controls {
+            display: flex; align-items: center; gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); padding-left: 12px;
+        }
+        .mini-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            padding: 0; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .mini-btn:hover { transform: scale(1.15); opacity: 0.7; }
+        .radio-status {
+            font-size: 0.8rem; font-family: 'Inter', sans-serif; font-weight: 500;
+            white-space: nowrap; min-width: 50px; opacity: 0.8; color: var(--text-color);
+        }
+        .contact-info, .socials { color: var(--text-color); }
     </style>
 </head>
 <body>
@@ -102,101 +150,203 @@
             
             <aside class="sticky-sidebar">
                 <div class="meta-title">
-                    <h1 class="hover-trigger">Design Research</h1>
-                    <p class="subtitle">Methodology / 2025</p>
+                    <h1 class="hover-trigger">How Design Can Help Reduce Smoking Habits</h1>
+                    <p class="subtitle">Design Research / 2025</p>
                 </div>
                 
                 <div class="meta-info-vertical">
                     <div class="info-block">
                         <h4>Role</h4>
-                        <p>UX Research, Data Analysis</p>
+                        <p>Research, Data Analysis</p>
                     </div>
                     <div class="info-block">
                         <h4>Tools</h4>
-                        <p>Figma, Miro, Python</p>
-                    </div>
-                    <div class="info-block">
-                        <h4>Objective</h4>
-                        <p>Understanding user behavior patterns to inform architectural decision making in digital spaces.</p>
+                        <p>Figma, Python</p>
                     </div>
                 </div>
             </aside>
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    Design is often seen as the final coat of paint, but the real work happens in the invisible architecture of information. This project documents the research phase for a financial literacy app.
+                    We wanted to research on how design can be used as a tool to help reduce smoking habits among college students. Through a combination of quantitative and qualitative research methods, we aimed to uncover insights into the motivations behind smoking and identify opportunities for design interventions.
                 </p>
 
-                <div class="project-img-large hover-trigger">
-                    <img src="images%20and%20mockups/research_map_white.png" 
-                         data-light="images%20and%20mockups/research_map_white.png"
-                         data-dark="images%20and%20mockups/research_map_dark.png"
-                         alt="User Journey Map" 
-                         style="width: 100%; height: auto; display: block; border: 1px solid rgba(128,128,128,0.1);">
+                <div class="pdf-container hover-trigger" style="width: 100%; height: 80vh; border: 1px solid rgba(128,128,128,0.1); margin-bottom: 1rem;">
+                    <embed src="images and mockups/design research.pdf" 
+                           type="application/pdf" 
+                           width="100%" 
+                           height="100%">
                 </div>
-                <p class="caption">Fig 1. User Journey & Empathy Mapping</p>
+                
+                <p class="caption">
+                     <a href="images and mockups/design research.pdf" target="_blank" style="text-decoration: underline;">Download PDF</a>
+                </p>
 
                 <p>
-                    We utilized quantitative surveys (N=500) combined with qualitative user interviews to identify the primary pain points. The data revealed a significant gap between perceived financial knowledge and actual behavior.
+                    We utilized quantitative surveys (N=70) combined with qualitative user interviews to identify the primary pain points. The data revealed a significant gap between perceived addiction and actual behavior.
                 </p>
 
-                <div class="project-img-grid">
-                    <div class="img-item hover-trigger">
-                        <img src="images%20and%20mockups/persona_1.png" 
-                             alt="User Persona A" 
-                             style="width: 100%; height: auto; display: block;">
+                <h3>Key Research Findings</h3>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <span class="big-number">40%</span>
+                        <p>of smokers interviewed started smoking because stress related reasons. While a lot of users started smoking due to curiosity and peer pressure.</p>
                     </div>
-                    <div class="img-item hover-trigger">
-                         <img src="images%20and%20mockups/persona_2.png" 
-                             alt="User Persona B" 
-                             style="width: 100%; height: auto; display: block;">
+                    <div class="insight-card">
+                        <span class="big-number">50%</span>
+                        <p>of smokers interviewed don’t want to quit smoking, while 42% do want to quit and 8% are unsure.</p>
+                    </div>
+                    <div class="insight-card">
+                        <span class="big-number">53%</span>
+                        <p>of smokers interviewed started smoking once they came to college.</p>
                     </div>
                 </div>
-                <p class="caption">Archetypal User Personas developed from interview data.</p>
 
-                <div style="height: 4rem;"></div>
-
-                <h3>Information Architecture</h3>
-                <p>
-                    Before a single pixel was pushed, we structured the sitemap to prioritize accessibility. Card sorting exercises helped us organize the navigation into intuitive clusters.
-                </p>
-
-                <div class="project-img-large hover-trigger">
-                    <img src="images%20and%20mockups/ia_flow.png" 
-                         alt="Information Architecture Flow" 
-                         style="width: 100%; height: auto; display: block;">
-                </div>
-
-                <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
-                    <a href="index.html" class="hover-trigger">
-                        <p>Return Home</p>
-                        <h2>All Work &rarr;</h2>
-                    </a>
-                </section>
-
+                <div class="spacer-large"></div>
             </section>
         </div> 
+
+        <div style="height: 15vh;"></div>
+
+        <div class="project-grid-layout">
+            
+            <aside class="sticky-sidebar">
+                <div class="meta-title">
+                    <h1 class="hover-trigger">Studio IF</h1>
+                    <p class="subtitle">Marketing Campaign / 2026</p>
+                </div>
+                
+                <div class="meta-info-vertical">
+                    <div class="info-block">
+                        <h4>Role</h4>
+                        <p>Marketing Strategy</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Tools</h4>
+                        <p>Photoshop, Figma</p>
+                    </div>
+                </div>
+            </aside>
+    
+            <section class="project-body-content">
+                <p class="lead-text">
+                    An interactive exploration of brand identity and digital presence. This campaign focuses on bridging the gap between studio philosophy and client engagement.
+                </p>
+    
+                <div class="pdf-container hover-trigger" style="width: 100%; height: 80vh; border: 1px solid rgba(128,128,128,0.1); margin-bottom: 1rem;">
+                    <embed src="images and mockups/studio if copy.pdf" 
+                           type="application/pdf" 
+                           width="100%" 
+                           height="100%">
+                </div>
+                
+                <p class="caption">
+                     <a href="images and mockups/studio if copy.pdf" target="_blank" style="text-decoration: underline;">Download Studio IF PDF</a>
+                </p>
+    
+                <p>
+                    The strategy focused on visual storytelling to highlight the studio's unique approach to architectural problem solving.
+                </p>
+            </section>
+        </div>
+    
+        <div style="height: 15vh;"></div>
+    
+        <div class="project-grid-layout">
+            
+            <aside class="sticky-sidebar">
+                <div class="meta-title">
+                    <h1 class="hover-trigger">RJ 19</h1>
+                    <p class="subtitle">Jooti Embroidery / 2025</p>
+                </div>
+                
+                <div class="meta-info-vertical">
+                    <div class="info-block">
+                        <h4>Format</h4>
+                        <p>Book Documentation</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Tools</h4>
+                        <p>InDesign, Illustrator, Photoshop</p>
+                    </div>
+                </div>
+            </aside>
+    
+            <section class="project-body-content">
+                <p class="lead-text">
+                    Creating a documentation on the artisans of Jooti Embroidery in Jodphur, Rajasthan. This project combines ethnographic research with visual storytelling to shed light on a traditional craft.
+                </p>
+    
+                <div class="project-img-grid" style="gap: 1.5rem;"> <div class="img-item hover-trigger spread-item" style="text-align: center;">
+                        <a href="reader.html?issue=RJ19" style="text-decoration: none; cursor: pointer;">
+                            <img src="images and mockups/jodphur cover.png" 
+                                 alt="RJ 19 Book Cover - Click to Read" 
+                                 style="width: 100%; height: auto; display: block;">
+                        </a>
+                        <p class="caption" style="margin-top: 1rem;">
+                            READ FULL BOOK (Click to Open)
+                        </p>
+                    </div>
+
+                    <div class="img-item hover-trigger">
+                        <img src="images and mockups/jodphur cover spread.png" 
+                             alt="Interior Spread Mockup" 
+                             style="width: 100%; height: auto; display: block;">
+                    </div>
+
+                    <div class="img-item hover-trigger">
+                        <img src="images and mockups/jodphur butterfly spread.png" 
+                             alt="Close-up Embroidery Detail" 
+                             style="width: 100%; height: auto; display: block;">
+                    </div>
+
+                </div>
+                
+                <div style="height: 2rem;"></div>
+    
+                <p>
+                    
+                </p>
+
+                <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
+                    <a href="75-years.html" class="hover-trigger">
+                        <p>End of Selection</p>
+                        <h2>75 Years of Gujarat &rarr;</h2>
+                    </a>
+                </section>
+            </section>
+        </div>
 
     </article>
 
     <footer>
         <div class="footer-content">
             <div class="contact-info">
-                <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+                <a href="mailto:vedsradiostation@gmail.com" class="hover-trigger">vedsradiostation@gmail.com</a>
                 <div class="socials">
                     <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
                     <a href="#" class="hover-trigger">Behance</a>
                 </div>
             </div>
 
-            <div class="radio-wrapper hover-trigger" id="radio-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="radio-wrapper hover-trigger">
+                <svg class="radio-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="2"></circle>
                     <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
                 </svg>
-                <span class="radio-status">OFF AIR</span>
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                <audio id="global-audio" crossorigin="anonymous"></audio>
             </div>
-            <audio id="audio-player"></audio>
 
             <div class="time-display">
                 <p>Local Time:</p>
@@ -220,9 +370,15 @@
                 });
             });
 
-            gsap.from(".sticky-sidebar", {
-                scrollTrigger: { trigger: ".project-grid-layout", start: "top 75%" },
-                x: -40, opacity: 0, duration: 1.6, ease: "power3.out"
+            // Loop through each project layout to animate sidebars independently
+            document.querySelectorAll(".project-grid-layout").forEach((layout) => {
+                const sidebar = layout.querySelector(".sticky-sidebar");
+                if(sidebar) {
+                    gsap.from(sidebar, {
+                        scrollTrigger: { trigger: layout, start: "top 75%" },
+                        x: -40, opacity: 0, duration: 1.6, ease: "power3.out"
+                    });
+                }
             });
 
             // 2. FOOTER COLLISION LOGIC
@@ -240,100 +396,169 @@
                     logo.style.opacity = '1';
                 }
             });
-        });
 
-        // 3. GENERATIVE NETWORK ANIMATION (Hero Canvas)
-        (function() {
-            const container = document.getElementById('research-container');
-            const canvas = document.getElementById('network-canvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
+            // 3. GENERATIVE NETWORK ANIMATION (Hero Canvas)
+            (function() {
+                const container = document.getElementById('research-container');
+                const canvas = document.getElementById('network-canvas');
+                if(!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const config = { particleCount: 60, connectionDist: 150, speed: 0.3, color: 'rgba(255, 255, 255, ' };
+                let particles = [];
 
-            // Settings
-            const config = {
-                particleCount: 60,
-                connectionDist: 150,
-                speed: 0.3,
-                color: 'rgba(255, 255, 255, '
-            };
-
-            let particles = [];
-
-            function resize() {
-                width = canvas.width = container.clientWidth;
-                height = canvas.height = container.clientHeight;
-                initParticles();
-            }
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * config.speed;
-                    this.vy = (Math.random() - 0.5) * config.speed;
-                    this.size = Math.random() * 2 + 1;
+                function resize() {
+                    width = canvas.width = container.clientWidth;
+                    height = canvas.height = container.clientHeight;
+                    initParticles();
                 }
 
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    // Bounce off edges
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-
-                draw() {
-                    ctx.fillStyle = '#fff';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                // Adjust count based on screen width
-                const count = width < 768 ? 30 : config.particleCount;
-                for (let i = 0; i < count; i++) {
-                    particles.push(new Particle());
-                }
-            }
-
-            function animate() {
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0, 0, width, height);
-
-                // Update & Draw Particles
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-
-                    // Draw Connections
-                    for (let j = i; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < config.connectionDist) {
-                            ctx.beginPath();
-                            // Opacity based on distance
-                            const alpha = 1 - (dist / config.connectionDist);
-                            ctx.strokeStyle = config.color + alpha + ')';
-                            ctx.lineWidth = 0.5;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * config.speed;
+                        this.vy = (Math.random() - 0.5) * config.speed;
+                        this.size = Math.random() * 2 + 1;
+                    }
+                    update() {
+                        this.x += this.vx; this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                    draw() {
+                        ctx.fillStyle = '#fff';
+                        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
                     }
                 }
-                requestAnimationFrame(animate);
+
+                function initParticles() {
+                    particles = [];
+                    const count = width < 768 ? 30 : config.particleCount;
+                    for (let i = 0; i < count; i++) particles.push(new Particle());
+                }
+
+                function animate() {
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(0, 0, width, height);
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update(); particles[i].draw();
+                        for (let j = i; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < config.connectionDist) {
+                                ctx.beginPath();
+                                const alpha = 1 - (dist / config.connectionDist);
+                                ctx.strokeStyle = config.color + alpha + ')';
+                                ctx.lineWidth = 0.5;
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+                window.addEventListener('resize', resize);
+                resize(); animate();
+            })();
+
+            // 4. RADIO LOGIC
+            const radioAudio = document.getElementById('global-audio');
+            const playBtn = document.getElementById('radio-play-btn');
+            const skipBtn = document.getElementById('radio-skip-btn');
+            const statusText = document.getElementById('radio-text');
+            const playIcon = playBtn.querySelector('.play-icon');
+            const pauseIcon = playBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            const playlist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audioCtx, analyser, source;
+
+            function initAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    source = audioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawVisualizer();
+                }
             }
 
-            window.addEventListener('resize', resize);
-            resize();
-            animate();
-        })();
+            function loadAndPlay(index) {
+                radioAudio.src = playlist[index].src;
+                statusText.innerText = playlist[index].title;
+                radioAudio.play();
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                if (isPlaying) {
+                    radioAudio.pause();
+                    isPlaying = false;
+                    statusText.innerText = "PAUSED";
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                } else {
+                    if (!radioAudio.src) {
+                        loadAndPlay(currentTrack);
+                    } else {
+                        radioAudio.play();
+                        statusText.innerText = playlist[currentTrack].title;
+                        isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }
+                }
+            });
+
+            skipBtn.addEventListener('click', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            function drawVisualizer() {
+                requestAnimationFrame(drawVisualizer);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const computedColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+                    ctx.fillStyle = isPlaying ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
+        });
     </script>
 </body>
 </html>

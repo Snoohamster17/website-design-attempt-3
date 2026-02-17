@@ -8,138 +8,141 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- VISUALIZER HERO STYLES --- */
-        #visualizer-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
+        /* --- THEME VARIABLES --- */
+        :root {
+            --text-color: #000000; /* Black in Light Mode */
+            --bg-color: #ffffff;
+            --bg-grad-start: #ffffff;
+            --bg-grad-end: #f2f2f2;
+            --halftone-color: rgba(0, 0, 0, 0.06);
         }
 
-        #viz-canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
+        [data-theme="dark"] {
+            --text-color: #ffffff; /* White in Dark Mode */
+            --bg-color: #121212;
+            --bg-grad-start: #121212;
+            --bg-grad-end: #0a0a0a;
+            --halftone-color: rgba(255, 255, 255, 0.06);
         }
+
+        body {
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(var(--halftone-color) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom right, var(--bg-grad-start), var(--bg-grad-end));
+            background-size: 24px 24px, 100% 100%;
+            background-attachment: fixed;
+            transition: color 0.3s ease, background-image 0.3s ease;
+        }
+
+        a { color: var(--text-color); transition: opacity 0.2s; }
+        a:hover { opacity: 0.7; }
+
+        /* --- VISUALIZER HERO STYLES --- */
+        #visualizer-container {
+            position: relative; width: 100%; height: 100%;
+            background-color: #000; overflow: hidden;
+        }
+        #viz-canvas { display: block; width: 100%; height: 100%; }
 
         /* --- PLAYER STYLES --- */
         .cd-interaction-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            position: relative; width: 100%; max-width: 400px;
+            margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;
         }
-
         .cd-case {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            position: relative; width: 300px; height: 300px; margin: 0 auto;
+            cursor: pointer; transition: transform 0.3s ease;
         }
         .cd-case:hover { transform: scale(1.02); }
-
         .vinyl-disc {
-            position: absolute;
-            top: 5px; right: 5px; width: 290px; height: 290px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #1a1a1a 30%, #333 31%, #1a1a1a 32%, #111 60%, #000 70%);
-            box-shadow: inset 0 0 0 5px #000;
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1; 
+            position: absolute; top: 5px; right: 5px; width: 290px; height: 290px;
+            border-radius: 50%; background: radial-gradient(circle, #1a1a1a 30%, #333 31%, #1a1a1a 32%, #111 60%, #000 70%);
+            box-shadow: inset 0 0 0 5px #000; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1; 
         }
-        
-        .vinyl-label {
-            width: 100px; height: 100px; border-radius: 50%;
-            background-color: #F05124; border: 2px solid white;
-        }
-
-        .cd-case.playing .vinyl-disc {
-            transform: translateX(120px) rotate(0deg); 
-            animation: spin 3s linear infinite; 
-        }
-
-        @keyframes spin {
-            from { transform: translateX(120px) rotate(0deg); }
-            to { transform: translateX(120px) rotate(360deg); }
-        }
-
+        .vinyl-label { width: 100px; height: 100px; border-radius: 50%; background-color: #F05124; border: 2px solid white; }
+        .cd-case.playing .vinyl-disc { transform: translateX(120px) rotate(0deg); animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: translateX(120px) rotate(0deg); } to { transform: translateX(120px) rotate(360deg); } }
         .album-cover-img {
-            position: relative; width: 100%; height: 100%;
-            object-fit: cover; z-index: 2; border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); background-color: #eee;
+            position: relative; width: 100%; height: 100%; object-fit: cover; z-index: 2;
+            border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); background-color: #eee;
         }
-
         .music-controls {
-            background: var(--bg-color);
-            border: 1px solid rgba(128,128,128,0.3);
-            padding: 1.5rem;
-            border-radius: 12px;
-            display: flex; flex-direction: column; gap: 1rem;
+            background: var(--bg-color); border: 1px solid rgba(128,128,128,0.3);
+            padding: 1.5rem; border-radius: 12px; display: flex; flex-direction: column; gap: 1rem;
         }
-
         .track-info h4 { margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .track-info p { margin: 0; font-size: 0.9rem; opacity: 0.6; }
-
-        .progress-container {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 0.8rem; font-family: 'Inter', sans-serif;
-        }
-
+        .progress-container { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; font-family: 'Inter', sans-serif; }
         input[type="range"] {
-            -webkit-appearance: none; appearance: none;
-            width: 100%; height: 4px; background: rgba(128,128,128,0.3);
-            border-radius: 2px; outline: none;
+            -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
+            background: rgba(128,128,128,0.3); border-radius: 2px; outline: none;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #F05124; cursor: pointer;
+            -webkit-appearance: none; appearance: none; width: 12px; height: 12px;
+            border-radius: 50%; background: #F05124; cursor: pointer;
         }
-
-        .control-buttons {
-            display: flex; justify-content: center; gap: 1.5rem; align-items: center;
-        }
+        .control-buttons { display: flex; justify-content: center; gap: 1.5rem; align-items: center; }
         .btn-icon {
-            background: none; border: none; cursor: pointer;
-            color: inherit; transition: transform 0.2s;
-            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; color: inherit;
+            transition: transform 0.2s; display: flex; align-items: center; justify-content: center;
         }
         .btn-icon:hover { transform: scale(1.1); }
-        
         .btn-play {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: inherit; border: 1px solid currentColor;
+            width: 50px; height: 50px; border-radius: 50%; background: inherit;
+            border: 1px solid currentColor;
         }
-        
         .btn-skip svg { width: 20px; height: 20px; }
 
         /* --- SPLIT NAVIGATION STYLES --- */
         nav {
-            position: absolute; top: 0; width: 100%;
-            padding: 40px 60px; display: flex; justify-content: flex-end;
-            align-items: center; z-index: 1000; box-sizing: border-box;
-            pointer-events: none; 
+            position: absolute; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            z-index: 1000; box-sizing: border-box; pointer-events: none; 
         }
         .logo {
             position: fixed; top: 40px; left: 60px; pointer-events: auto; 
-            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem;
-            z-index: 1001; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem; z-index: 1001;
+            
+            /* LOGO COLOR INVERSION */
+            color: var(--text-color);
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, color 0.3s ease;
         }
         .nav-links {
-            position: relative; display: flex; gap: 2rem;
-            align-items: center; pointer-events: auto; 
+            position: relative; display: flex; gap: 2rem; align-items: center; pointer-events: auto; 
         }
         @media (max-width: 768px) {
             nav { padding: 20px 20px; }
             .logo { top: 20px; left: 20px; font-size: 1rem; }
         }
+
+        /* --- FOOTER RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(128,128,128,0.05); padding: 8px 16px;
+            border-radius: 30px; border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
+        }
+        .radio-wrapper:hover { border-color: var(--text-color); }
+        .radio-icon-svg { width: 20px; height: 20px; display: block; color: var(--text-color); }
+        #mini-visualizer { width: 30px; height: 16px; display: block; opacity: 0.6; }
+        .radio-controls {
+            display: flex; align-items: center; gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); padding-left: 12px;
+        }
+        .mini-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            padding: 0; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .mini-btn:hover { transform: scale(1.15); opacity: 0.7; }
+        .radio-status {
+            font-size: 0.8rem; font-family: 'Inter', sans-serif; font-weight: 500;
+            white-space: nowrap; min-width: 50px; opacity: 0.8; color: var(--text-color);
+        }
+        .contact-info, .socials { color: var(--text-color); }
     </style>
 </head>
 <body>
@@ -183,15 +186,15 @@
                         <p>Frank Ocean</p>
                     </div>
                     <div class="info-block">
-                        <h4>Role</h4>
-                        <p>Art Direction, Packaging</p>
+                        <h4></h4>
+                        <p></p>
                     </div>
                 </div>
             </aside>
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    A sonic journey requires a visual identity that matches its depth. This redesign focuses on tactile interaction, bringing the physical ritual of vinyl into the digital age.
+                    Integrating the design of the rumoured Frank Ocean album "Look At Us We're in Love" with the photography of his one edition Magazine of Boys Don't Cry. Using the design and font stylization of his single DHL I've decided to redesign the album cover for the Boys Don't Cry edition of Blonde.
                 </p>
 
                 <div style="height: 2rem;"></div>
@@ -253,7 +256,7 @@
 
                 </div>
                 <p class="caption" style="text-align: center; margin-top: 2rem;">
-                    Fig 1. Click the cover to play.
+                     Click the cover to play.
                 </p>
 
             </section>
@@ -265,15 +268,14 @@
             
             <aside class="sticky-sidebar">
                 <div class="meta-title">
-                    <h1 class="hover-trigger">Lyric Booklet</h1>
-                    <p class="subtitle">Typography / Layout</p>
+                    <h1 class="hover-trigger">Vinyl Sleeve</h1>
+                    <p class="subtitle">Layout</p>
                 </div>
             </aside>
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    The interior layout mirrors the rhythm of the music. Staccato typography for upbeat tracks, and flowing, liquid grids for the ballads.
-                </p>
+                    The interior layout of the Vinyl sleeve contains a mockup of how the Vinyl will look and a visual inspired by the foldout poster that comes with the original Vinyl sleeve. 
 
                 <div class="project-img-grid">
                     <div class="img-item hover-trigger">
@@ -287,10 +289,41 @@
                              style="width: 100%; height: auto; display: block;">
                     </div>
                 </div>
+            </section>
+        </div> 
+
+        <div style="height: 6rem;"></div>
+
+        <div class="project-grid-layout">
+            
+            <aside class="sticky-sidebar">
+                <div class="meta-title">
+                    <h1 class="hover-trigger">Leak 04-13</h1>
+                    <p class="subtitle">Album Redesign / 2025</p>
+                </div>
+                
+                <div class="meta-info-vertical">
+                    <div class="info-block">
+                        <h4>Artist</h4>
+                        <p>Jai Paul</p>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="project-body-content">
+                <p class="lead-text">
+                    Redesiged album cover for Jai Paul's infamous "Leak 04-13". The design draws from the raw, unpolished nature of the music, blending with the chaotic original album cover.
+                </p>
+
+                <div class="hover-trigger" style="width: 300px; height: 300px; margin: 0 auto;">
+                    <img src="images and mockups/bait ones.PNG" 
+                         alt="Jai Paul Album Cover Redesign" 
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                </div>
+                <p class="caption" style="text-align: center;">Proposed Album Cover Art</p>
 
                 <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
-                    <a href="index.html" class="hover-trigger">
-                        <p>Back to Home</p>
+                    <a href="touchdesigner.html" class="hover-trigger">
                         <h2>Touchdesigner &rarr;</h2>
                     </a>
                 </section>
@@ -310,14 +343,24 @@
                 </div>
             </div>
 
-            <div class="radio-wrapper hover-trigger" id="radio-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="radio-wrapper hover-trigger">
+                <svg class="radio-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="2"></circle>
                     <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
                 </svg>
-                <span class="radio-status">OFF AIR</span>
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                <audio id="global-audio" crossorigin="anonymous"></audio>
             </div>
-            <audio id="audio-player"></audio>
 
             <div class="time-display">
                 <p>Local Time:</p>
@@ -330,28 +373,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- 1. MAIN CD PLAYER LOGIC ---
             const cdCase = document.getElementById('cd-trigger');
             const audio = document.getElementById('main-audio');
-            
             const playBtn = document.getElementById('play-pause-btn');
             const playIcon = playBtn.querySelector('.icon-play');
             const pauseIcon = playBtn.querySelector('.icon-pause');
-            
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
-            
             const muteBtn = document.getElementById('mute-btn');
             const volHighIcon = muteBtn.querySelector('.icon-vol-high');
             const volMuteIcon = muteBtn.querySelector('.icon-vol-mute');
-
             const seekSlider = document.getElementById('seek-slider');
             const currTimeText = document.getElementById('curr-time');
             const durTimeText = document.getElementById('dur-time');
-            
             const titleText = document.getElementById('track-title');
             const artistText = document.getElementById('track-artist');
 
-            // --- ALBUM PLAYLIST DATA ---
             const playlist = [
                 { title: "Nikes", artist: "Frank Ocean - Blonde", src: "images and mockups/01 Nikes.ogg" },
                 { title: "Ivy", artist: "Frank Ocean - Blonde", src: "images and mockups/02 Ivy.ogg" },
@@ -361,20 +400,11 @@
                 { title: "Skyline To", artist: "Frank Ocean - Blonde", src: "images and mockups/06 Skyline To.ogg" },
                 { title: "Self Control", artist: "Frank Ocean - Blonde", src: "images and mockups/07 Self Control.ogg" },
                 { title: "Good Guy", artist: "Frank Ocean - Blonde", src: "images and mockups/08 Good Guy.ogg" },
-                { title: "Nights", artist: "Frank Ocean - Blonde", src: "images and mockups/09 Nights.ogg" },
-                { title: "Solo (Reprise)", artist: "Frank Ocean - Blonde", src: "images and mockups/10 Solo (Reprise).ogg" },
-                { title: "Pretty Sweet", artist: "Frank Ocean - Blonde", src: "images and mockups/11 Pretty Sweet.ogg" },
-                { title: "Facebook Story", artist: "Frank Ocean - Blonde", src: "images and mockups/12 Facebook Story.ogg" },
-                { title: "Close to You", artist: "Frank Ocean - Blonde", src: "images and mockups/13 Close to You.ogg" },
-                { title: "White Ferrari", artist: "Frank Ocean - Blonde", src: "images and mockups/14 White Ferrari.ogg" },
-                { title: "Seigfried", artist: "Frank Ocean - Blonde", src: "images and mockups/15 Seigfried.ogg" },
-                { title: "Godspeed", artist: "Frank Ocean - Blonde", src: "images and mockups/16 Godspeed.ogg" },
-                { title: "Futura Free", artist: "Frank Ocean - Blonde", src: "images and mockups/17 Futura Free.ogg" }
+                { title: "Nights", artist: "Frank Ocean - Blonde", src: "images and mockups/09 Nights.ogg" }
             ];
 
             let trackIndex = 0;
 
-            // Initialize Player
             function loadTrack(index) {
                 const track = playlist[index];
                 audio.src = track.src;
@@ -382,8 +412,6 @@
                 artistText.innerText = track.artist;
                 audio.load();
             }
-
-            // Load first track on page load
             loadTrack(trackIndex);
 
             function togglePlay() {
@@ -401,33 +429,23 @@
             }
 
             function playNext() {
-                trackIndex++;
-                if (trackIndex > playlist.length - 1) {
-                    trackIndex = 0; // Loop to start
-                }
+                trackIndex = (trackIndex + 1) % playlist.length;
                 loadTrack(trackIndex);
                 togglePlay();
             }
 
             function playPrev() {
-                trackIndex--;
-                if (trackIndex < 0) {
-                    trackIndex = playlist.length - 1; // Loop to end
-                }
+                trackIndex = (trackIndex - 1 + playlist.length) % playlist.length;
                 loadTrack(trackIndex);
                 togglePlay();
             }
 
-            // Event Listeners
             playBtn.addEventListener('click', togglePlay);
             cdCase.addEventListener('click', togglePlay);
             nextBtn.addEventListener('click', playNext);
             prevBtn.addEventListener('click', playPrev);
-
-            // Auto-play next track when current ends
             audio.addEventListener('ended', playNext);
 
-            // Mute / Slider Logic
             muteBtn.addEventListener('click', () => {
                 audio.muted = !audio.muted;
                 if (audio.muted) {
@@ -462,21 +480,114 @@
                 return `${min}:${sec < 10 ? '0' : ''}${sec}`;
             }
 
-            // --- SPLIT SCROLL LOGIC ---
+            // --- 2. FOOTER RADIO LOGIC ---
+            const radioAudio = document.getElementById('global-audio');
+            const radioPlayBtn = document.getElementById('radio-play-btn');
+            const radioSkipBtn = document.getElementById('radio-skip-btn');
+            const radioText = document.getElementById('radio-text');
+            const rPlayIcon = radioPlayBtn.querySelector('.play-icon');
+            const rPauseIcon = radioPlayBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            const radioPlaylist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let radioIndex = 0;
+            let radioCtx, analyser, source;
+
+            function initRadioAudio() {
+                if (!radioCtx) {
+                    radioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = radioCtx.createAnalyser();
+                    source = radioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(radioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawRadioViz();
+                }
+            }
+
+            function playRadioTrack(index) {
+                radioAudio.src = radioPlaylist[index].src;
+                radioText.innerText = radioPlaylist[index].title;
+                radioAudio.play();
+                rPlayIcon.style.display = 'none';
+                rPauseIcon.style.display = 'block';
+            }
+
+            radioPlayBtn.addEventListener('click', () => {
+                initRadioAudio();
+                if (radioCtx.state === 'suspended') radioCtx.resume();
+
+                if (radioAudio.paused) {
+                    // Pause Main Player if playing
+                    if(!audio.paused) {
+                        audio.pause();
+                        cdCase.classList.remove('playing');
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
+                    }
+
+                    if (!radioAudio.src) playRadioTrack(radioIndex);
+                    else {
+                        radioAudio.play();
+                        rPlayIcon.style.display = 'none';
+                        rPauseIcon.style.display = 'block';
+                        radioText.innerText = radioPlaylist[radioIndex].title;
+                    }
+                } else {
+                    radioAudio.pause();
+                    rPlayIcon.style.display = 'block';
+                    rPauseIcon.style.display = 'none';
+                    radioText.innerText = "PAUSED";
+                }
+            });
+
+            radioSkipBtn.addEventListener('click', () => {
+                radioIndex = (radioIndex + 1) % radioPlaylist.length;
+                playRadioTrack(radioIndex);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                radioIndex = (radioIndex + 1) % radioPlaylist.length;
+                playRadioTrack(radioIndex);
+            });
+
+            function drawRadioViz() {
+                requestAnimationFrame(drawRadioViz);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const computedColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+                    ctx.fillStyle = !radioAudio.paused ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
+
+            // --- 3. FOOTER COLLISION LOGIC ---
             const logo = document.querySelector('.logo');
             const footer = document.querySelector('footer');
-
             window.addEventListener('scroll', () => {
                 const footerRect = footer.getBoundingClientRect();
                 const windowHeight = window.innerHeight;
-
-                // Check if footer is visible
                 if (footerRect.top < windowHeight) {
-                    // Slide Logo Up (Hide) so it doesn't overlap
                     logo.style.transform = 'translateY(-100px)';
                     logo.style.opacity = '0';
                 } else {
-                    // Show Logo
                     logo.style.transform = 'translateY(0)';
                     logo.style.opacity = '1';
                 }

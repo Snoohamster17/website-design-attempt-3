@@ -976,3 +976,104 @@ footer {
     /* Optional: rounded corners if your design uses them */
     border-radius: 4px; 
 }
+
+/* --- NEW SECTIONS STYLES --- */
+
+/* Spacing Utility */
+.spacer-large {
+    height: 6rem;
+    width: 100%;
+}
+
+/* Section 1: Insights Grid */
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(128,128,128,0.2);
+    padding-top: 2rem;
+}
+
+.insight-card .big-number {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.insight-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #555; /* Slightly lighter than main text */
+}
+
+/* Section 2: Visual System */
+.visual-system-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Split Colors and Type */
+    gap: 4rem;
+    margin-top: 2rem;
+}
+
+/* Swatches */
+.swatch-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.swatch {
+    width: 100%;
+    height: 80px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff; /* Default text color for dark swatches */
+}
+
+/* Typography Showcase */
+.type-showcase {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    border-left: 1px solid rgba(128,128,128,0.2);
+    padding-left: 2rem;
+}
+
+.type-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.type-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.type-preview {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.type-preview.serif { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+.type-preview.sans { font-family: 'Inter', sans-serif; font-weight: 400; }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .insights-grid { grid-template-columns: 1fr; }
+    .visual-system-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .type-showcase { border-left: none; padding-left: 0; border-top: 1px solid rgba(128,128,128,0.2); padding-top: 2rem; }
+}

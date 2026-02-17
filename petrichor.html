@@ -5,85 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PETRICHOR & | Publication Design</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
 
     <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --text-color: #000000; /* Black in Light Mode */
+            --bg-grad-start: #ffffff;
+            --bg-grad-end: #f2f2f2;
+            --halftone-color: rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --text-color: #ffffff; /* White in Dark Mode */
+            --bg-grad-start: #121212;
+            --bg-grad-end: #0a0a0a;
+            --halftone-color: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(var(--halftone-color) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom right, var(--bg-grad-start), var(--bg-grad-end));
+            background-size: 24px 24px, 100% 100%;
+            background-attachment: fixed;
+            transition: color 0.3s ease;
+        }
+
         /* --- LAYOUT STYLES --- */
         .spread-item { grid-column: span 2; }
         @media (max-width: 768px) { .spread-item { grid-column: span 1; } }
 
         /* --- SPLIT NAVIGATION STYLES --- */
         nav {
-            /* 1. ABSOLUTE: This container (and links) scrolls with the page */
-            position: absolute; 
-            top: 0;
-            width: 100%;
-            padding: 40px 60px; /* Aligned padding */
-            display: flex;
-            justify-content: flex-end; /* Links pushed right */
-            align-items: center;
-            z-index: 1000;
-            box-sizing: border-box;
-            pointer-events: none; 
+            position: absolute; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            z-index: 1000; box-sizing: border-box; pointer-events: none; 
         }
 
         .logo {
-            /* 2. FIXED: The Logo stays pinned to the screen */
-            position: fixed;
-            top: 40px; 
-            left: 60px; 
-            pointer-events: auto; 
-            font-weight: 2000;
-            letter-spacing: -0.02em;
-            font-size: 1.5rem;
-            line-height: 1;
-            z-index: 1001;
+            position: fixed; top: 40px; left: 60px; pointer-events: auto; 
+            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem; z-index: 1001;
             
-            /* Slide up animation for footer collision */
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            /* LOGO COLOR INVERSION */
+            color: var(--text-color);
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, color 0.3s ease;
         }
 
         .nav-links {
-            /* 3. RELATIVE: Scrolls away with the content */
-            position: relative;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            pointer-events: auto; 
+            position: relative; display: flex; gap: 2rem; pointer-events: auto; 
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             nav { padding: 20px 20px; }
             .logo { top: 20px; left: 20px; font-size: 1rem; }
         }
 
-        /* --- VIMEO FULLSCREEN WRAPPER --- */
+        /* --- VIMEO FULLSCREEN STYLES --- */
         .vimeo-wrapper {
             position: absolute;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            overflow: hidden; 
-            pointer-events: none; 
-            z-index: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; pointer-events: none; z-index: 0;
+        }
+        .vimeo-wrapper iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 56.25vw; /* 16:9 Aspect Ratio */
+            min-height: 100vh; min-width: 177.77vh; /* 16:9 Aspect Ratio */
+            transform: translate(-50%, -50%); border: none;
         }
 
-        .vimeo-wrapper iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; 
-            transform: translate(-50%, -50%);
-            border: none;
+        /* --- RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(128,128,128,0.05); padding: 8px 16px;
+            border-radius: 30px; border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
         }
+        .radio-wrapper:hover { border-color: var(--text-color); }
+        .radio-icon-svg { width: 20px; height: 20px; display: block; color: var(--text-color); }
+        #mini-visualizer { width: 30px; height: 16px; display: block; opacity: 0.6; }
+        .radio-controls {
+            display: flex; align-items: center; gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); padding-left: 12px;
+        }
+        .mini-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            padding: 0; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .mini-btn:hover { transform: scale(1.15); opacity: 0.7; }
+        .radio-status {
+            font-size: 0.8rem; font-family: 'Inter', sans-serif; font-weight: 500;
+            white-space: nowrap; min-width: 50px; opacity: 0.8; color: var(--text-color);
+        }
+        .contact-info, .socials { color: var(--text-color); }
     </style>
 </head>
 <body>
@@ -106,7 +126,7 @@
     <article class="project-detail">
         
         <header class="project-hero">
-            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative; background-color: #000;">
+            <div class="hero-img parallax" data-speed="0.1" style="overflow: hidden; position: relative;">
                 
                 <div class="vimeo-wrapper">
                     <iframe 
@@ -124,7 +144,7 @@
             <aside class="sticky-sidebar">
                 <div class="meta-title">
                     <h1 class="hover-trigger"><b>PETRICHOR &</b></h1>
-                    <p class="subtitle">Magazine Design / 2024</p>
+                    <p class="subtitle">Magazine Design / 2025</p>
                 </div>
                 
                 <div class="meta-info-vertical">
@@ -149,11 +169,10 @@
                          alt="Magazine Spread Layout" 
                          style="width: 100%; height: 100%; object-fit: cover; display: block;">
                 </div>
-                <p class="caption">Editorial Spread Layout</p>
+                <p class="caption"></p>
 
                 <p>
-                    The grid system was designed to be fluid, mimicking the unpredictability of weather patterns. We utilized negative space heavily to allow the content to "breathe," much like the earth after a fresh rain.
-                </p>
+                    
 
                 <div class="project-img-grid">
                     <div class="img-item hover-trigger" style="text-align: center;">
@@ -180,7 +199,7 @@
                 </div>
                 
                 <p>
-                    By combining hand-drawn elements in Procreate with rigorous InDesign layouts, the final publication bridges the gap between organic illustration and structured communication design.
+                   
                 </p>
             </section>
         </div> 
@@ -192,25 +211,24 @@
             <aside class="sticky-sidebar">
                 <div class="meta-title">
                     <h1 class="hover-trigger"><b>Severance</b></h1>
-                    <p class="subtitle">Poster Series / 2024</p>
+                    <p class="subtitle">Poster Series / 2025</p>
                 </div>
                 
                 <div class="meta-info-vertical">
                     <div class="info-block">
                         <h4>Context</h4>
-                        <p>Work-Life Balance, Surrealism</p>
+                        <p>Typography Poster</p>
                     </div>
                     <div class="info-block">
-                        <h4>Format</h4>
-                        <p>A2 Print, Digital Display</p>
+                        <h4>Tools</h4>
+                        <p>Photoshop</p>
                     </div>
                 </div>
             </aside>
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    Expanding the visual language into large-format print. This series explores the dichotomy of memory and corporate identity through stark typography.
-                </p>
+                    A series of typographic posters inspired by the TV show "Severance". The design approach was to create a visual seperation that reflects the show's themes of duality and confinement.
 
                 <div class="poster-grid">
                     <div class="img-item hover-trigger">
@@ -244,24 +262,24 @@
             <aside class="sticky-sidebar">
                 <div class="meta-title">
                     <h1 class="hover-trigger">Experimental Typography</h1>
-                    <p class="subtitle">Type Design / 2024</p>
+                    <p class="subtitle">Type Design / 2025</p>
                 </div>
                 
                 <div class="meta-info-vertical">
                     <div class="info-block">
                         <h4>Focus</h4>
-                        <p>Kinetic Type, Custom Glyphs</p>
+                        <p></p>
                     </div>
                     <div class="info-block">
                         <h4>Tools</h4>
-                        <p>Illustrator, After Effects</p>
+                        <p>Illustrator, Procreate</p>
                     </div>
                 </div>
             </aside>
 
             <section class="project-body-content">
                 <p class="lead-text">
-                    Breaking the grid to explore type as image. This series deconstructs standard letterforms to create expressive, texture-heavy compositions that challenge legibility.
+                    Breaking the grid to explore type as image as shapes and forms. This series deconstructs letterforms to create expressive, texture-heavy compositions that challenge legibility.
                 </p>
 
                 <div class="poster-grid">
@@ -279,7 +297,7 @@
                     </div>
 
                 </div>
-                <p class="caption">Deconstructed letterforms and texture exploration.</p>
+                <p class="caption">Exploration of form and texture</p>
 
                 <section class="next-project" style="margin-top: 6rem; border-top: 1px solid rgba(128,128,128,0.2);">
                     <a href="design-research.html" class="hover-trigger">
@@ -302,14 +320,24 @@
                 </div>
             </div>
 
-            <div class="radio-wrapper hover-trigger" id="radio-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="radio-wrapper hover-trigger">
+                <svg class="radio-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="2"></circle>
                     <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
                 </svg>
-                <span class="radio-status">OFF AIR</span>
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                <audio id="global-audio" crossorigin="anonymous"></audio>
             </div>
-            <audio id="audio-player"></audio>
 
             <div class="time-display">
                 <p>Local Time:</p>
@@ -324,25 +352,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             gsap.registerPlugin(ScrollTrigger);
 
-            /* --- SPLIT SCROLL LOGIC --- */
-            const logo = document.querySelector('.logo');
-            const footer = document.querySelector('footer');
-
-            window.addEventListener('scroll', () => {
-                const footerRect = footer.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-
-                // If footer is entering the viewport, hide the fixed logo
-                if (footerRect.top < windowHeight) {
-                    logo.style.transform = 'translateY(-100px)';
-                    logo.style.opacity = '0';
-                } else {
-                    logo.style.transform = 'translateY(0)';
-                    logo.style.opacity = '1';
-                }
-            });
-
-            /* --- CONTENT REVEALS (Kept from your GSAP request) --- */
+            /* --- CONTENT REVEALS --- */
             gsap.utils.toArray(".project-body-content > *").forEach((el) => {
                 gsap.from(el, {
                     scrollTrigger: { trigger: el, start: "top 85%" },
@@ -354,6 +364,117 @@
                 scrollTrigger: { trigger: ".project-grid-layout", start: "top 75%" },
                 x: -40, opacity: 0, duration: 1.6, ease: "power3.out"
             });
+
+            /* --- SPLIT SCROLL LOGIC --- */
+            const logo = document.querySelector('.logo');
+            const footer = document.querySelector('footer');
+
+            window.addEventListener('scroll', () => {
+                const footerRect = footer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                if (footerRect.top < windowHeight) {
+                    logo.style.transform = 'translateY(-100px)';
+                    logo.style.opacity = '0';
+                } else {
+                    logo.style.transform = 'translateY(0)';
+                    logo.style.opacity = '1';
+                }
+            });
+
+            /* --- RADIO LOGIC --- */
+            const radioAudio = document.getElementById('global-audio');
+            const playBtn = document.getElementById('radio-play-btn');
+            const skipBtn = document.getElementById('radio-skip-btn');
+            const statusText = document.getElementById('radio-text');
+            const playIcon = playBtn.querySelector('.play-icon');
+            const pauseIcon = playBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            const playlist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audioCtx, analyser, source;
+
+            function initAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    source = audioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawVisualizer();
+                }
+            }
+
+            function loadAndPlay(index) {
+                radioAudio.src = playlist[index].src;
+                statusText.innerText = playlist[index].title;
+                radioAudio.play();
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                if (isPlaying) {
+                    radioAudio.pause();
+                    isPlaying = false;
+                    statusText.innerText = "PAUSED";
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                } else {
+                    if (!radioAudio.src) {
+                        loadAndPlay(currentTrack);
+                    } else {
+                        radioAudio.play();
+                        statusText.innerText = playlist[currentTrack].title;
+                        isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }
+                }
+            });
+
+            skipBtn.addEventListener('click', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            function drawVisualizer() {
+                requestAnimationFrame(drawVisualizer);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const computedColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+                    ctx.fillStyle = isPlaying ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
         });
     </script>
 </body>

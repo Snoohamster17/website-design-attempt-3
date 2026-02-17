@@ -8,132 +8,101 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* === SPLIT NAVIGATION STYLES === */
+        /* --- THEME VARIABLES --- */
+        :root {
+            --text-color: #000000; /* Black in Light Mode */
+            --bg-grad-start: #ffffff;
+            --bg-grad-end: #f2f2f2;
+            --halftone-color: rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --text-color: #ffffff; /* White in Dark Mode */
+            --bg-grad-start: #121212;
+            --bg-grad-end: #0a0a0a;
+            --halftone-color: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(var(--halftone-color) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom right, var(--bg-grad-start), var(--bg-grad-end));
+            background-size: 24px 24px, 100% 100%;
+            background-attachment: fixed;
+            transition: color 0.3s ease;
+        }
+
+        /* --- SPLIT NAVIGATION STYLES --- */
         nav {
-            /* 1. ABSOLUTE: The container (and links) scroll with the page */
-            position: absolute; 
-            top: 0;
-            width: 100%;
-            padding: 40px 60px; /* Aligned padding */
-            display: flex;
-            justify-content: flex-end; /* Links pushed right */
-            align-items: center;
-            z-index: 1000;
-            box-sizing: border-box;
-            pointer-events: none; 
+            position: absolute; top: 0; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            z-index: 1000; box-sizing: border-box; pointer-events: none; 
         }
 
         .logo {
-            /* 2. FIXED: The Logo stays pinned to the screen */
-            position: fixed;
-            top: 40px; 
-            left: 60px; 
-            pointer-events: auto; 
-            font-weight: 2000;
-            letter-spacing: -0.02em;
-            font-size: 1.5rem;
-            line-height: 1;
-            z-index: 1001;
+            position: fixed; top: 40px; left: 60px; pointer-events: auto; 
+            font-weight: 2000; letter-spacing: -0.02em; font-size: 1.5rem; line-height: 1; z-index: 1001;
             
-            /* Slide up animation for footer collision */
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            /* LOGO COLOR INVERSION */
+            color: var(--text-color);
+            
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, color 0.3s ease;
         }
 
         .nav-links {
-            /* 3. RELATIVE: Scrolls away with the content */
-            position: relative;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            pointer-events: auto; 
+            position: relative; display: flex; gap: 2rem; align-items: center; pointer-events: auto; 
         }
 
-        /* Mobile Adjustments */
+        a { color: var(--text-color); text-decoration: none; transition: opacity 0.2s ease; }
+        a:hover { opacity: 0.7; }
+
         @media (max-width: 768px) {
             nav { padding: 20px 20px; }
             .logo { top: 20px; left: 20px; font-size: 1rem; }
         }
 
-        /* === HERO CAROUSEL STYLES === */
+        /* --- HERO CAROUSEL STYLES --- */
         .photo-hero {
-            height: 90vh;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
+            height: 90vh; width: 100%; overflow: hidden; position: relative;
         }
-
         .carousel-track {
-            display: flex;
-            height: 100%;
-            width: max-content;
+            display: flex; height: 100%; width: max-content;
             animation: carouselStep 18s ease-in-out infinite;
         }
-        
-        .carousel-track:hover {
-            animation-play-state: paused;
-        }
-
+        .carousel-track:hover { animation-play-state: paused; }
         @keyframes carouselStep {
             0%, 30% { transform: translateX(0vw); }
             33.33%, 63.33% { transform: translateX(-100vw); }
             66.66%, 96.66% { transform: translateX(-200vw); }
             100% { transform: translateX(-300vw); }
         }
-
-        .carousel-item {
-            flex: 0 0 100vw;
-            height: 100%;
-            position: relative;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .carousel-item { flex: 0 0 100vw; height: 100%; position: relative; }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
         .carousel-caption {
-            position: absolute;
-            bottom: 2rem;
-            left: 2rem;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 2;
-            pointer-events: none;
+            position: absolute; bottom: 2rem; left: 2rem; color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 2; pointer-events: none;
         }
 
-        /* === MASONRY GRID STYLES === */
-        .photo-grid-section {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        /* --- MASONRY GRID STYLES --- */
+        .photo-grid-section { padding: 4rem 2rem; max-width: 1400px; margin: 0 auto; }
         .masonry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            grid-auto-rows: 300px;
-            gap: 1.5rem;
-            grid-auto-flow: dense;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-auto-rows: 300px; gap: 1.5rem; grid-auto-flow: dense;
         }
-
         .grid-photo {
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-            opacity: 0;
-            transform: translateY(30px);
+            position: relative; overflow: hidden; border-radius: 4px;
+            opacity: 0; transform: translateY(30px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
-
         .grid-photo img {
             width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block;
         }
         .grid-photo:hover img { transform: scale(1.05); }
-
         .grid-photo.landscape { grid-column: span 2; }
         .grid-photo.portrait { grid-row: span 2; }
         .grid-photo.big { grid-column: span 2; grid-row: span 2; }
+        .grid-photo.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 768px) {
             .masonry-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
@@ -142,7 +111,31 @@
             }
         }
 
-        .grid-photo.visible { opacity: 1; transform: translateY(0); }
+        /* --- RADIO STYLES --- */
+        .radio-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(128,128,128,0.05); padding: 8px 16px;
+            border-radius: 30px; border: 1px solid rgba(128,128,128,0.2);
+            transition: border-color 0.3s ease;
+        }
+        .radio-wrapper:hover { border-color: var(--text-color); }
+        .radio-icon-svg { width: 20px; height: 20px; display: block; color: var(--text-color); }
+        #mini-visualizer { width: 30px; height: 16px; display: block; opacity: 0.6; }
+        .radio-controls {
+            display: flex; align-items: center; gap: 8px;
+            border-left: 1px solid rgba(128,128,128,0.3); padding-left: 12px;
+        }
+        .mini-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            padding: 0; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .mini-btn:hover { transform: scale(1.15); opacity: 0.7; }
+        .radio-status {
+            font-size: 0.8rem; font-family: 'Inter', sans-serif; font-weight: 500;
+            white-space: nowrap; min-width: 50px; opacity: 0.8; color: var(--text-color);
+        }
+        .contact-info, .socials { color: var(--text-color); }
     </style>
 </head>
 <body>
@@ -282,21 +275,31 @@
     <footer>
         <div class="footer-content">
             <div class="contact-info">
-                <a href="mailto:VedBhat260@gmail.com" class="hover-trigger">VedBhat260@gmail.com</a>
+                <a href="mailto:vedsradiostation@gmail.com" class="hover-trigger">vedsradiostation@gmail.com</a>
                 <div class="socials">
                     <a href="https://www.instagram.com/vedsradiostation?igsh=OHFpbWI1dXh2cW5o&utm_source=qr" target="_blank" class="hover-trigger">Instagram</a>
                     <a href="https://500px.com/p/vedbhat260" class="hover-trigger">500px</a>
                 </div>
             </div>
 
-            <div class="radio-wrapper hover-trigger" id="radio-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="radio-wrapper hover-trigger">
+                <svg class="radio-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="2"></circle>
                     <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
                 </svg>
-                <span class="radio-status">OFF AIR</span>
+                <canvas id="mini-visualizer" width="30" height="16"></canvas>
+                <div class="radio-controls">
+                    <button class="mini-btn" id="radio-play-btn">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button class="mini-btn" id="radio-skip-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+                <span class="radio-status" id="radio-text">OFF AIR</span>
+                <audio id="global-audio" crossorigin="anonymous"></audio>
             </div>
-            <audio id="audio-player"></audio>
 
             <div class="time-display">
                 <p>Local Time:</p>
@@ -309,32 +312,25 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            
+            // --- 1. FOOTER COLLISION LOGIC ---
             const logo = document.querySelector('.logo');
             const footer = document.querySelector('footer');
 
             window.addEventListener('scroll', () => {
                 const footerRect = footer.getBoundingClientRect();
                 const windowHeight = window.innerHeight;
-
-                // Check if footer is visible in the viewport
                 if (footerRect.top < windowHeight) {
-                    // Slide Logo Up (Hide)
                     logo.style.transform = 'translateY(-100px)';
                     logo.style.opacity = '0';
                 } else {
-                    // Show Logo
                     logo.style.transform = 'translateY(0)';
                     logo.style.opacity = '1';
                 }
             });
 
-            /* Grid Animation */
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
+            // --- 2. GRID FADE-IN ANIMATION ---
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
@@ -346,10 +342,104 @@
                 });
             }, observerOptions);
 
-            const photos = document.querySelectorAll('.grid-photo');
-            photos.forEach(photo => {
+            document.querySelectorAll('.grid-photo').forEach(photo => {
                 observer.observe(photo);
             });
+
+            // --- 3. RADIO LOGIC ---
+            const radioAudio = document.getElementById('global-audio');
+            const playBtn = document.getElementById('radio-play-btn');
+            const skipBtn = document.getElementById('radio-skip-btn');
+            const statusText = document.getElementById('radio-text');
+            const playIcon = playBtn.querySelector('.play-icon');
+            const pauseIcon = playBtn.querySelector('.pause-icon');
+            const canvas = document.getElementById('mini-visualizer');
+            const ctx = canvas.getContext('2d');
+
+            const playlist = [
+                { title: "Space Invaders", src: "images and mockups/KAYTRANADA - SPACE INVADER (Official Audio).mp3" },
+                { title: "Chix", src: "images and mockups/1-14 Chix (MySpace _ Leaked Version).m4a" },
+                { title: "Rushes To", src: "images and mockups/17 Frank Ocean - Rushes To.flac" },
+                { title: "Go", src: "images and mockups/Go.mp3" },
+                { title: "Jasmine (Demo)", src: "images and mockups/Jai Paul - Jasmine (Demo).mp3" }
+            ];
+            let currentTrack = 0;
+            let isPlaying = false;
+            let audioCtx, analyser, source;
+
+            function initAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    source = audioCtx.createMediaElementSource(radioAudio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    analyser.fftSize = 64; 
+                    drawVisualizer();
+                }
+            }
+
+            function loadAndPlay(index) {
+                radioAudio.src = playlist[index].src;
+                statusText.innerText = playlist[index].title;
+                radioAudio.play();
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                if (isPlaying) {
+                    radioAudio.pause();
+                    isPlaying = false;
+                    statusText.innerText = "PAUSED";
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                } else {
+                    if (!radioAudio.src) {
+                        loadAndPlay(currentTrack);
+                    } else {
+                        radioAudio.play();
+                        statusText.innerText = playlist[currentTrack].title;
+                        isPlaying = true;
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }
+                }
+            });
+
+            skipBtn.addEventListener('click', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            radioAudio.addEventListener('ended', () => {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadAndPlay(currentTrack);
+            });
+
+            function drawVisualizer() {
+                requestAnimationFrame(drawVisualizer);
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const computedColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+                const barWidth = (canvas.width / 4) - 2;
+                let x = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    const index = Math.floor(i * (bufferLength / 4)); 
+                    const barHeight = (dataArray[index] / 255) * canvas.height;
+                    ctx.fillStyle = isPlaying ? computedColor : 'rgba(128,128,128,0.3)'; 
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 2;
+                }
+            }
         });
     </script>
 </body>
